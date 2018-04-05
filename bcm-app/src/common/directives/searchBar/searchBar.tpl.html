@@ -1,0 +1,120 @@
+<md-toolbar class="padding-content" layout-align="center center" layout="row" style="background: #f5f5f5; font-size: 14px; height: 30px;">
+    <div layout="row" flex="95" style="padding-left:5px;">
+        <div flex="100">
+            <div layout="row">                
+                <!-- DIRETORIA -->
+                <md-input-container style="padding-right: 10px;min-width: 120px;">
+                    <label>Diretoria</label>
+                    <md-select class="md-block input-tasks" ng-model="$ctrl.variablesService.selectedDiretoria" ng-change="$ctrl.changeDiretoria()">
+                        <md-option>Todos</md-option>
+                        <md-option ng-repeat="dir in $ctrl.diretorias" value="{{dir.key}}">
+                            {{dir.value}}
+                        </md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- UF -->
+                <md-input-container style="padding-right: 10px;min-width: 80px;">
+                    <label>UF</label>
+                    <md-select class="md-block input-tasks" ng-model="$ctrl.variablesService.selectedUF" ng-change="$ctrl.changeUF()">
+                        <md-option>Todos</md-option>
+                        <md-option ng-repeat="uf in $ctrl.ufs" value="{{uf.key}}">
+                            {{uf.value}}
+                        </md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- CIDADE -->
+                <md-input-container style="padding-right: 10px;min-width: 120px;">
+                    <label>Cidade</label>
+                    <md-select class="md-block input-tasks" ng-model="$ctrl.variablesService.selectedCidade">
+                        <md-option>Todos</md-option>
+                        <md-option ng-repeat="cid in $ctrl.cidades" value="{{cid.key}}">
+                            {{cid.value}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>    
+                <!-- GRUPO Solicitante -->
+                <md-input-container style="padding-right: 10px;">
+                    <label>Grupo</label>
+                    <md-select class="md-block" ng-model="$ctrl.variablesService.cbGrupoOwner">
+                        <md-option>Todos</md-option>
+                        <md-option value="B2C">B2C</md-option>
+                        <md-option value="B2B">B2B</md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- TAREFA -->                
+                <md-input-container flex="20" style="padding-right: 10px;">
+                    <input ng-model="$ctrl.variablesService.ownerName" placeholder="Solicitante">
+                </md-input-container> 
+                <!-- Tipo Investimento -->
+                <md-input-container style="padding-right: 10px;">
+                    <label>Fluxo</label>
+                    <md-select class="md-block" ng-model="$ctrl.variablesService.cbTipoFluxo">
+                        <md-option>Todos</md-option>
+                        <md-option value="idCentral">Central</md-option>
+                        <md-option value="idOutros">Pequenas Obras</md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- Tipo Tecnologia -->
+                <md-input-container style="padding-right: 10px;">
+                    <label>Tecnologia</label>
+                    <md-select class="md-block" ng-model="$ctrl.variablesService.cbTipoTecnlogia">
+                        <md-option>Todos</md-option>
+                        <md-option value="idCobre">Cobre</md-option>
+                        <md-option value="idFibra">Fibra</md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- Tipo Obra -->
+                <md-input-container style="padding-right: 10px;">
+                    <label>Tipo obra</label>
+                    <md-select class="md-block" ng-model="$ctrl.variablesService.cbTipoObra">
+                        <md-option>Todos</md-option>                                                
+                        <md-option value="idAlivioLogradouro">Alívio de Logradouro</md-option>
+                        <md-option value="idAlivioFTTH">Alívio FTTH</md-option>
+                        <md-option value="idAlivio">Alívios</md-option>
+                        <md-option value="idPequenoAlivio">Pequenos Alívios</md-option>
+                        <md-option value="idAteiMSAN">ATEI com MSAN</md-option>
+                        <md-option value="idAteiMetalico">ATEI Metálico</md-option>
+                        <md-option value="idCondominio">Condomínio</md-option>
+                        <md-option value="idIndustrial">Distrito Industrial</md-option>
+                        <md-option value="idExpansao">Expansão</md-option>
+                        <md-option value="idMicro">Micro Poligono</md-option>
+                        <md-option value="idNovaArea">Nova Área</md-option>
+                        <md-option value="idShopping">Shopping</md-option>
+                        <md-option value="idSobreposicao">Sobreposição</md-option>
+                        <md-option value="idExpansaoSobreposicao">Sobreposição + Expansão</md-option>
+                    </md-select>
+                </md-input-container>        
+                <!-- TAREFA -->                
+                <md-input-container style="padding-right: 10px;min-width: 120px;">
+                    <label>Tarefa</label>
+                    <md-select class="md-block input-tasks" ng-model="$ctrl.variablesService.cbTarefas">
+                        <md-option>Todas</md-option>
+                        <md-option ng-repeat="task in $ctrl.tarefas" value="{{task.key}}">
+                            {{task.value}}
+                        </md-option>
+                    </md-select>
+                </md-input-container> 
+                <!-- PROCESSO -->                
+                <md-input-container flex="20">
+                    <input ng-model="$ctrl.variablesService.businessKey" placeholder="Número Processo">
+                </md-input-container>        
+            </div>
+        </div>            
+    </div>
+    <div flex="4" align="center">
+        <md-button ng-disabeld="$ctrl.kanbanService.isLoading" class="md-fab md-mini md-primary" ng-click="$ctrl.sendFilter()" 
+        style="margin-top: 32px; bottom: 18px; padding-bottom: 5px; border-radius: 6px; line-height: 54px; width: 34px; height: 33px;">
+                <ng-md-icon icon="search" style="fill: #FFF">
+                    <md-tooltip>Buscar</md-tooltip>
+                </ng-md-icon>
+        </md-button>
+    </div>
+    <div flex="4" align="right" >
+        <md-button ng-disabeld="$ctrl.kanbanService.isLoading" class="md-fab md-mini md-primary" ng-click="$ctrl.cleanFilter()" 
+        style="margin-top: 32px; bottom: 18px; padding-bottom: 5px; border-radius: 6px; line-height: 54px; width: 34px; height: 33px;">
+                <ng-md-icon icon="clear" style="fill: #FFF">
+                    <md-tooltip>Limpar Filtro</md-tooltip>
+                </ng-md-icon>
+        </md-button>
+    </div>
+</md-toolbar>

@@ -1,0 +1,161 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="60" layout="row">
+            <div>
+                <ng-md-icon icon="keyboard_backspace" style="fill: #757575; margin-right: 20px;" ng-click="goBack()">
+                    <md-tooltip>Voltar</md-tooltip>
+                </ng-md-icon>
+
+                <span class="title-bar">Detalhes da Instância</span>
+            </div>
+        </div>
+    </div>
+</md-toolbar>
+<div></div>
+<iframe style="visibility:hidden;height:1px;width:1px;" id="iframeFile"></iframe>
+<div class="spinner" ng-show="service.isLoading">
+    <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+</div>
+
+<div class="padding-content" ng-show="!service.isLoading" style="padding-top: 10px;">
+
+    <div ng-repeat="vivoTask in service.vivoTasks">
+
+        <md-expansion-panel md-component-id="panelOne" >
+            <md-expansion-panel-collapsed>
+                <ng-md-icon ng-if="vivoTask.lateDays > 0 && vivoTask.status !== 'OPENED'" icon="error" style="fill: #fe6363;margin-top: 6px;"></ng-md-icon>
+                <ng-md-icon ng-if="vivoTask.lateDays === 0 && vivoTask.status !== 'OPENED'" icon="check" style="fill: #339e4a;margin-top: 6px;"></ng-md-icon>
+                <ng-md-icon ng-if="vivoTask.lateDays > 0 && vivoTask.status === 'OPENED'" icon="send" style="fill: #fe6363;margin-top: 6px;"></ng-md-icon>
+                <ng-md-icon ng-if="vivoTask.lateDays === 0 && vivoTask.status === 'OPENED'" icon="send" style="fill: #0066CC;margin-top: 6px;"></ng-md-icon>
+                <div class="md-summary" style=" padding-left: 5px;">
+                    <span ng-class="{'expansion-panel-card-warning' : vivoTask.lateDays > 0 , 'expansion-panel-card-regular' : vivoTask.lateDays === 0 }">{{service.vivoTasks.length - ($index)}}. {{vivoTask.name}}</span>
+                    <span ng-if="vivoTask.lateDays > 0" style="padding-left: 20px; color: #fe6363;font-family: 'Roboto'; font-size: 13px;">Atraso de {{vivoTask.lateDays}} dias</span>
+                </div>
+                <md-expansion-panel-icon></md-expansion-panel-icon>
+            </md-expansion-panel-collapsed>
+
+            <md-expansion-panel-expanded>
+
+                <md-expansion-panel-header>
+                    <ng-md-icon ng-if="vivoTask.lateDays > 0 && vivoTask.status !== 'OPENED'" icon="error" style="fill: #fe6363;margin-top: 16px;"></ng-md-icon>
+                    <ng-md-icon ng-if="vivoTask.lateDays === 0 && vivoTask.status !== 'OPENED'" icon="check" style="fill: #339e4a;margin-top: 16px;"></ng-md-icon>
+                    <ng-md-icon ng-if="vivoTask.lateDays > 0 && vivoTask.status === 'OPENED'" icon="send" style="fill: #fe6363;margin-top: 16px;"></ng-md-icon>
+                    <ng-md-icon ng-if="vivoTask.lateDays === 0 && vivoTask.status === 'OPENED'" icon="send" style="fill: #0066CC;margin-top: 16px;"></ng-md-icon>
+                    <div class="md-summary" style=" padding-left: 5px;">
+                        <span ng-class="{'expansion-panel-card-warning' : vivoTask.lateDays > 0 , 'expansion-panel-card-regular' : vivoTask.lateDays === 0 }">{{service.vivoTasks.length - ($index)}}. {{vivoTask.name}}</span>
+                        <span ng-if="vivoTask.lateDays > 0" style="padding-left: 20px; color: #fe6363;font-family: 'Roboto'; font-size: 13px;">Atraso de {{vivoTask.lateDays}} dias</span>
+                    </div>
+                    <md-expansion-panel-icon></md-expansion-panel-icon>
+                </md-expansion-panel-header>
+
+                <md-expansion-panel-content>
+                    <div layout="row"  layout-wrap>
+
+                        <div flex="33" ng-repeat="formIten in vivoTask.formItens"  ng-if="formIten.readable && formIten.type !== 'DATAGRID'">
+
+                            <div flex="95" ng-if="formIten.type === 'STRING'">
+                                <md-input-container layout="column">
+                                    <label>{{formIten.name}}</label>
+                                        <input ng-model="formIten.value" type="text" disabled>
+                                </md-input-container>
+                            </div>
+
+                            <div flex="95"ng-if="formIten.type === 'LONG'">
+                                <md-input-container layout="column"  >
+                                    <label>{{formIten.name}}</label>
+                                    <input placeholder="Somente Números" ng-model="formIten.value" type="text"  disabled>
+                                </md-input-container>
+                            </div>
+
+                            <div flex="95">
+                                <md-input-container layout="column" ng-if="formIten.type === 'DATE'" type="text">
+                                    <label>{{formIten.name}}</label>
+                                    <input ng-model="formIten.value  | date: dd/MM/yy" type="text" disabled>
+                                </md-input-container>
+                            </div>                            
+
+                            <div flex="95" ng-if="formIten.type === 'CHECKLIST'">
+                                <md-input-container  layout="column" >
+                                    <label>{{formIten.name}}</label>
+                                    <md-select ng-model="formIten.value" multiple >
+                                        <md-optgroup>
+                                            <md-option disabled ng-repeat="(key,possibleValue) in formIten.possibleValues" value="{{key}}">{{possibleValue |  limitTo : 6 }}</md-option>
+                                        </md-optgroup>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+
+                            <div flex="95" ng-if="formIten.type === 'ENUM'">
+                                <md-input-container layout="column" >
+                                    <label>{{formIten.name}}</label>
+                                    <md-select class="md-block input-tasks"  ng-model="formIten.value"  disabled>
+                                        <md-option  ng-repeat="(key,possibleValue) in formIten. possibleValues" value="{{key}}">
+                                            {{possibleValue}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+
+                            <div flex="95" ng-if="formIten.type === 'BOOLEAN'">
+                                <md-input-container layout="column" >
+                                    <md-checkbox class="md-block input-tasks"  ng-model="formIten.value" disabled>
+                                        {{formIten.name}}
+                                    </md-checkbox>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="column" flex="95" style="margin-top: 5px;" ng-if="formIten.type === 'DOCUMENT'" >
+                                <div style=" margin-top: -16px;padding: 7px;">
+                                    <span style=" font-size: 12px; color: #B7B7B7; font-family: Verdana,sans-serif;">{{formIten.name}}</span>
+                                </div>
+
+                                <div flex="95" ng-show="formIten.myDocumentVO.name !== null || formIten.myDocumentVO.name !== undefined">
+                                    <div layout="row" style="margin-top: -8px;">
+                                        <div flex="90" style="margin-top: auto;">
+                                            <span >{{formIten.myDocumentVO.name}}</span>
+                                        </div>
+
+                                        <div  flex="5" style="margin-top: auto;">
+                                            <ng-md-icon icon="file_download" style="fill: #757575; margin-right: 20px;" ng-click="downloadFile(formIten.myDocumentVO.documentManagerId)">
+                                                <md-tooltip>Baixar</md-tooltip>
+                                            </ng-md-icon>
+                                        </div>
+                                    </div>
+                                    <md-divider style=" margin-top: 4px;" flex="100"></md-divider>
+                                </div>
+                            </div>
+
+                            <div flex="95" ng-if="formIten.type === 'DOUBLE'" >
+                                <md-input-container layout="column" >
+                                    <label>{{formIten.name}}</label>
+                                    <input ng-model="formIten.value"  type="text" ng-disabled="!formIten.writable">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <br/>
+                        
+                    </div>
+                    <div ng-repeat="form in vivoTask.formItens" ng-if="form.type === 'DATAGRID' && form.readable">
+                        <div>
+                            <grid form-item="form"></grid>
+                        </div>                     
+                        <br/>
+                        <br/>
+                    </div>
+                </md-expansion-panel-content>
+
+                <md-expansion-panel-footer>
+                    <div flex></div>
+                    <a style=" text-decoration: none  !important;" ng-if="vivoTask.status === 'OPENED'" ui-sref="in.openTask({id:vivoTask.taskId})"><md-button class="md-warn" ng-click="$panel.collapse()"><span class="link-task">Ir para Tarefa</span></md-button></a>
+                    <a style=" text-decoration: none  !important;"  ng-if="vivoTask.status !== 'OPENED'" ui-sref="in.openHistoricTask({id:vivoTask.taskId})"><md-button class="md-warn" ng-click="$panel.collapse()"><span class="link-task">Ir para Tarefa</span></md-button></a>
+                    <md-button class="md-warn" ng-click="$panel.collapse()"><span class="link-bar-warn">Fechar</span></md-button>
+                </md-expansion-panel-footer>
+
+            </md-expansion-panel-expanded>
+        </md-expansion-panel>
+    </div>
+
+
+
+
+</div>

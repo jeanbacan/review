@@ -1,0 +1,8 @@
+{
+  "directory": "vendor",
+   
+  "registry" : {
+    "search" : [ "http://nexus.popvono/repository/bower-repo" ]
+   },
+  "resolvers" : [ "bower-nexus3-resolver" ]
+}

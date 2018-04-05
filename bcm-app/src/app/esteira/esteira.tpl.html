@@ -1,0 +1,83 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="45"><span class="title-bar">Solicitações de Investimentos</span></div>
+        <div flex="55"></div>
+        <div ng-if="hasAuthorization('PERMIT_ALL')" flex="25" align="right">
+            <md-button md-no-ink ng-click="newInstance()" class="md-primary">
+                <span class="link-bar">Abrir novo BC</span>
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+
+<search-bar flex="100" search-function="refresh(filterDTO)"></search-bar> 
+
+<div class="padding-content" style="padding-top: 10px;"  ng-show="!service.isLoading">
+
+    <div layout="row">
+        <div layout="row" ng-repeat="group in groupedAmounts track by $index">
+            <md-card class="card-box-shadow" style="margin:5px !important">
+                <div layout="column">
+                    <div style="background-color : #83c8e6">
+                        <span class="text-card-title-esteira">{{ group.name }}</span>                        
+                    </div>
+                    <div>
+                        <md-card-content class="md-card-content">       
+                            <div layout="row">
+                                <div style="width:100px; padding-top:5px" layout="row">
+                                    <div flex><span class="card-counts"><md-tooltip>Total de facilidades</md-tooltip>{{group.amount.totalFacility}}</span></div>
+                                </div>            
+                                <div style="width:45px" layout="column">
+                                    <div><span class="card-counts-tasks"><md-tooltip>Total de investimentos</md-tooltip>{{group.amount.totalTasks}}</span></div>                                
+                                    <div ng-if="group.name != 'Total'">
+                                        <div><span class="card-counts-percentual">
+                                            <md-tooltip>Percentual do total de investimentos</md-tooltip>
+                                            {{ (group.amount.totalTasks * 100) / groupedAmounts[TOTAL].amount.totalTasks | number:0 }}%
+                                        </span></div>
+                                    </div>  
+                                </div>            
+                            </div>
+                        </md-card-content>
+                    </div>
+                </div>
+            </md-card>        
+        </div>
+    </div>  
+    <br />
+
+    <div class="spinner"  ng-show="service.isLoading">
+        <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+    </div>
+
+    <div  layout="row" layout-wrap >
+        <div flex="20"  ng-repeat="taskItens  in service.countTasksDTO.countTaskItems">
+            <md-card  flex="95">
+                <md-card-content>
+                    <div flex="100" layout="row">
+                        <div flex="95" layout-align="center">
+                            <span  class="text-date-regular">{{$index + 1}}. {{taskItens.description}} </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div flex="100" layout="row">
+                        <div flex="70">
+                            <span class="span-count">{{taskItens.taskAmount}}</span>
+                        </div>
+
+                        <div flex="30">
+                            <!--<md-button md-no-ink  class="md-primary">
+                                <a style="text-decoration: none !important;" ui-sref="in.instanceListWithId({id:taskItens.name})"><span  class="link-bar">ABRIR</span></a>
+                            </md-button>-->
+                        </div>
+                    </div>
+                    <div flex="100" layout="row">
+                        <div flex="70">
+                            <span class="text-date-regular">{{taskItens.facilityAmount}}</span>
+                        </div>
+                    </div>
+
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="45"><span class="title-bar">Geração de relatório</span></div>
+
+    </div>
+</md-toolbar>
+<br/><br/><br/>
+<div class="padding-content">
+    <md-card style="align-items: center; padding: 50px;">
+        <div layout="row" flex="100">
+            <div>
+                <div layout="row">
+                    <ng-md-icon fill="#474747" icon="filter_list" style="margin-top: 20px;padding-right: 11px;"></ng-md-icon>
+
+                    <md-input-container style="padding-right: 11px;min-width: 170px;">
+                        <label>UF</label>
+                        <md-select class="md-block" ng-model="selectedUF">
+                            <md-option value="%">Todos</md-option>
+                            <md-option ng-repeat="uf in filterService.ufs" value="{{uf.key}}">
+                                {{uf.value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container style="padding-right: 11px;min-width: 170px;">
+                        <label>Status</label>
+                        <md-select ng-model="selectedStatus">
+                            <md-option selected="Em andamento" value="ACTIVE">Em andamento</md-option>
+                            <md-option value="FINISHED">Concluído</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button type="submit" ng-click="sendFilter(selectedUF,selectedStatus)" class="md-fab md-mini md-primary" style="font-family: 'Roboto-Bold'; bottom: 18px; padding-bottom: 5px; border-radius: 6px; margin-top: 32px;width: 88px; height: 33px;">
+                        <span>Enviar</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </md-card>
+
+</div>

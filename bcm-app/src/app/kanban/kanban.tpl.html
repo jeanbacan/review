@@ -1,0 +1,272 @@
+    <md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+        <div layout="row" flex="100">
+            <div flex="45"><span class="title-bar">Tarefas</span></div>
+            <div flex="55"></div>
+            <div  ng-if="hasAuthorization('PERMIT_ALL')" flex="25" align="right">
+                <md-button md-no-ink ng-click="newInstance()" class="md-primary" aria-label="Abrir novo BC">
+                    <span class="link-bar">Abrir novo BC</span>
+                </md-button>
+            </div>
+        </div>
+    </md-toolbar>
+
+    <search-bar flex="100" search-function="service.loadKanban(filterDTO)"></search-bar>
+
+    <div class="padding-content">
+        <div class="spinner" ng-show="service.isLoading">
+            <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+        </div>
+
+        <div layout="row" layout-align="center"  flex="100">
+            <div flex="33">
+                <md-card  class="kanban-toolbar">
+                    <md-card-content class="md-toolbar-tools subheader-kanban-pending">
+                        <h2 flex="65"><span style="font-family: 'Roboto-Bold'; color: #f2f8fa">PENDENTES</span></h2>
+                        <h2 flex="35" align="right">
+                            <md-button md-no-ink ng-click="assignAllToMe()" class="md-primary" ng-show="service.kanbanMap.PENDING.length > 0" aria-label="ASSUMIR TODAS">
+                                <span class="link-bar">ASSUMIR TODAS</span>
+                            </md-button>
+                        </h2>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+
+            <div flex="33">
+                <md-card  class="kanban-toolbar">
+                    <md-card-content class="md-toolbar-tools subheader-kanban-pending">
+                        <h2><span  style="font-family: 'Roboto-Bold'; color: #f2f8fa">EM EXECUÇÃO</span></h2>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+
+
+            <div flex="33">
+                <md-card  class="kanban-toolbar">
+                    <md-card-content class="md-toolbar-tools subheader-kanban-pending">
+                        <h2><span  style="font-family: 'Roboto-Bold'; color: #f2f8fa">ÚLTIMAS CONCLUÍDAS</span></h2>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+
+        <div layout="row" layout-align="center"   flex="100">
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                        TAREFAS PENDENTES
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div flex="33" ng-repeat='(key, value) in service.kanbanMap' ng-if="key ===   'PENDING'">
+                <md-card ng-repeat="vivoTaskPending in value">
+
+                    <md-card-content>
+                        <div flex="100" layout="row">                                                        
+                            <div flex="95" class="text-card-bold" layout="row">
+                                <div ng-show="showNew(vivoTaskPending.createTime)" class="nova">
+                                    <i class="material-icons">whatshot</i> &nbsp;
+                                </div>
+                                <a style=" text-decoration: none  !important;" ui-sref="in.openTask({id:vivoTaskPending.taskId})">
+                                    <span>{{vivoTaskPending.name |  limitTo : 48 }}</span>
+                                    <span ng-if="vivoTaskPending.name.length > 48">...</span>
+                                </a>                                
+                            </div>
+
+                            <div flex="5" style="margin: -10px;">
+                                <md-menu>
+                                    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Mais">
+                                        <ng-md-icon icon="more_vert" style="fill: #757575"></ng-md-icon>
+                                    </md-button>
+                                    <md-menu-content style="max-height: 350px ;width: 160px;">
+                                        <md-menu-item align="left">
+                                            <div style="text-align: left" align="left">
+                                                <a style=" text-decoration: none  !important;" ui-sref="in.openTask({id:vivoTaskPending.taskId})"><span class="text-link">Abrir</span></a>
+                                            </div>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="assignToMe(vivoTaskPending.taskId)" aria-label="Assumir">Assumir</md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="manageTask(vivoTaskPending)" aria-label="Encaminhar">Encaminhar</md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="downloadAllFiles(vivoTaskPending)" aria-label="Baixar Arquivos">Baixar Arquivos</md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </div>
+                        </div>
+
+                        <div layout="row" class="names-card-panel" flex="100">
+                            <div class="column">
+                                <div flex="100"><i class="material-icons">lightbulb_outline</i><strong>Criado por: </strong>{{ vivoTaskPending.owner.name }}</div>                                
+                            </div>
+                        </div>
+
+                        <div layout="row" class="icons-card-panel" flex="100">
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">attach_money</i> <strong>{{ vivoTaskPending.processVariables.tipoInvestimento }}</strong><br></div>
+                            <div align="center" flex="40" md-whiteframe="1"><i class="material-icons">location_city</i> <strong>{{ vivoTaskPending.processVariables.tipoObra }}</strong><br></div>
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">build</i> <strong>{{ vivoTaskPending.processVariables.tipoTecnologia ? vivoTaskPending.processVariables.tipoTecnologia : '-' }}</strong><br></div>
+                        </div>
+                        <div>
+                            <md-divider style="margin-left:-11px;margin-right:-11px;margin-bottom:10px;"></md-divider>
+                        </div>                        
+                        <div layout="row" flex="100" class="footer-card-panel">
+                            <div align="left" flex="50">
+                                <a style=" text-decoration: none  !important;" ui-sref="in.detailsInstance({id:vivoTaskPending.businessKey})">
+                                    <span class="text-card-regular">{{vivoTaskPending.businessKey}}</span>
+                                </a>
+                                <span class="text-card-regular"> | {{vivoTaskPending.candidateGroup}}</span>
+                            </div>
+                            <div align="right" flex="50"> 
+                                <span>
+                                        <span ng-class="{'text-date-regular-warning' : vivoTaskPending.lateDays > 0 , 'text-date-regular' : vivoTaskPending.lateDays === 0 } ">{{vivoTaskPending.dueDate | date:"dd/MM/yyyy"}}</span>
+                                        <span ng-if="vivoTaskPending.lateDays > 0" class="text-date-regular-warning">(Atrasado {{vivoTaskPending.lateDays}} dias) </span>
+                                </span>
+                            </div>                            
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                       TAREFAS EM EXECUÇÃO
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div flex="33" ng-repeat='(key, value) in service.kanbanMap' ng-if="key === 'EXECUTING'">
+                <md-card ng-repeat="vivoTaskExecuting in value">
+
+                    <md-card-content>
+                        <div flex="100" layout="row">                            
+                            <div flex="95" class="text-card-bold" layout="row">
+                                <div ng-show="showNew(vivoTaskExecuting.createTime)" class="nova">
+                                    <i class="material-icons">whatshot</i> &nbsp;
+                                </div>
+                                <a style=" text-decoration: none  !important;" ui-sref="in.openTask({id:vivoTaskExecuting.taskId})">
+                                    <span class="text-card-bold">{{vivoTaskExecuting.name |  limitTo : 48 }}</span>
+                                    <span ng-if="vivoTaskExecuting.name > 48">...</span>
+                                </a>                                                                                                
+                            </div>
+
+                            <div flex="5" style="margin: -10px;">
+                                <md-menu>
+                                    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Mais">
+                                        <ng-md-icon icon="more_vert" style="fill: #757575"></ng-md-icon>
+                                    </md-button>
+                                    <md-menu-content style="max-height: 350px ;width: 160px;">
+                                        <md-menu-item align="left">
+                                            <div style="text-align: left">
+                                                <a style=" text-decoration: none  !important;" ui-sref="in.openTask({id:vivoTaskExecuting.taskId})"><span class="text-link">Abrir</span></a>
+                                            </div>
+                                        </md-menu-item>
+                                        <md-menu-item  ng-if="me.uid == vivoTaskExecuting.owner.id">
+                                            <md-button ng-click="unassign(vivoTaskExecuting.taskId)" aria-label="Renunciar tarefa">Renunciar tarefa</md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="manageTask(vivoTaskExecuting)" aria-label="Encaminhar">Encaminhar</md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="downloadAllFiles(vivoTaskExecuting)" aria-label="Baixar Arquivos">Baixar Arquivos</md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </div>
+                        </div>
+
+                        <div layout="row" class="names-card-panel" flex="100">
+                            <div class="column" flex="100">
+                                <div flex="100"><i class="material-icons">lightbulb_outline</i><strong>Criado por: </strong>{{ vivoTaskExecuting.owner.name }}</div>
+                                <div flex="100"><i class="material-icons">person</i><strong>Responsável: </strong>{{ vivoTaskExecuting.assignee }}</div>
+                            </div>
+                        </div>
+
+                        <div layout="row" class="icons-card-panel" flex="100">
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">attach_money</i> <strong>{{ vivoTaskExecuting.processVariables.tipoInvestimento }}</strong><br></div>
+                            <div align="center" flex="40" md-whiteframe="1"><i class="material-icons">location_city</i> <strong>{{ vivoTaskExecuting.processVariables.tipoObra }}</strong><br></div>
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">build</i> <strong>{{ vivoTaskExecuting.processVariables.tipoTecnologia ? vivoTaskExecuting.processVariables.tipoTecnologia : '-' }}</strong><br></div>
+                        </div>
+                        <div>
+                            <md-divider style="margin-left:-11px;margin-right:-11px;margin-bottom:10px;"></md-divider>
+                        </div>                      
+                        <div layout="row" flex="100" class="footer-card-panel">
+                            <div align="left" flex="50">
+                                <a style=" text-decoration: none  !important;" ui-sref="in.detailsInstance({id:vivoTaskExecuting.businessKey})">
+                                    <span class="text-card-regular">{{vivoTaskExecuting.businessKey}}</span>
+                                </a>
+                                <span class="text-card-regular"> | {{vivoTaskExecuting.candidateGroup}}</span>
+                            </div>
+                            <div align="right" flex="50"> 
+                                <span>
+                                    <span ng-class="{'text-date-regular-warning' : vivoTaskExecuting.lateDays > 0 , 'text-date-regular' : vivoTaskExecuting.lateDays === 0 } ">{{vivoTaskExecuting.dueDate | date:"dd/MM/yyyy"}}</span>
+                                    <span ng-if="vivoTaskExecuting.lateDays > 0" class="text-date-regular-warning">(Atrasado {{vivoTaskExecuting.lateDays}} dias) </span>
+                                </span>
+                            </div>                                                        
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                       TAREFAS CONCLUÍDAS
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div flex="33" ng-repeat='(key, value) in service.kanbanMap' ng-if="key ===   'COMPLETED'">
+                <md-card ng-repeat="vivoTaskClose in value">
+
+                    <md-card-content>
+                        <div flex="100" layout="row">
+                            <div flex="95" class="text-card-bold">
+                                <a style=" text-decoration: none  !important;" ui-sref="in.openHistoricTask({id:vivoTaskClose.taskId})">
+                                    <span class="text-card-bold">{{vivoTaskClose.name |  limitTo : 48 }}</span>
+                                    <span ng-if="vivoTaskClose.name > 48">...</span>
+                                </a>                                                                
+                            </div>
+
+                            <div flex="5" style="margin: -10px;">
+                                <md-menu>
+                                    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Mais">
+                                        <ng-md-icon icon="more_vert" style="fill: #757575"></ng-md-icon>
+                                    </md-button>
+                                    <md-menu-content style="max-height: 350px ;width: 160px;">
+                                        <md-menu-item align="left">
+                                            <div style="text-align: left">
+                                                <a style=" text-decoration: none  !important;" ui-sref="in.openHistoricTask({id:vivoTaskClose.taskId})"><span class="text-link">Abrir</span></a>
+                                            </div>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="downloadAllFiles(vivoTaskClose)" aria-label="Baixar Arquivos">Baixar Arquivos</md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </div>
+                        </div>
+
+                        <div layout="row" class="names-card-panel" flex="100">
+                            <div class="column" flex="100">
+                                <div flex="100"><i class="material-icons">whatshot</i><strong>Criado por: </strong>{{ vivoTaskClose.owner.name }}</div>
+                                <div flex="100"><i class="material-icons">person</i><strong>Responsável: </strong>{{ vivoTaskClose.assignee }}</div>
+                            </div>
+                        </div>                        
+                        <div layout="row" class="icons-card-panel" flex="100">
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">attach_money</i> <strong>{{ vivoTaskClose.processVariables.tipoInvestimento }}</strong><br></div>
+                            <div align="center" flex="40" md-whiteframe="1"><i class="material-icons">location_city</i> <strong>{{ vivoTaskClose.processVariables.tipoObra }}</strong><br></div>
+                            <div align="center" flex="30" md-whiteframe="1"><i class="material-icons">build</i> <strong>{{ vivoTaskClose.processVariables.tipoTecnologia ? vivoTaskClose.processVariables.tipoTecnologia : '-' }}</strong><br></div>
+                        </div>
+                        <div>
+                            <md-divider style="margin-left:-11px;margin-right:-11px;margin-bottom:10px;"></md-divider>
+                        </div>  
+                        <div layout="row" flex="100" class="footer-card-panel">
+                            <div align="left" flex="100">
+                                <a style="text-decoration: none !important;" ui-sref="in.detailsInstance({id:vivoTaskClose.businessKey})">
+                                    <span class="text-card-regular">{{vivoTaskClose.businessKey}}</span>
+                                </a>
+                                <span class="text-card-regular"> | {{vivoTaskClose.candidateGroup}}</span>
+                            </div>
+                            <div align="right" flex="20">
+                                <span>
+                                    <span class="text-date-regular">{{vivoTaskClose.completedTime | date:"dd/MM/yyyy"}}</span>
+                                </span> 
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>

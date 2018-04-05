@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="config/config.js"></script>
+  <script src="assets/js/progressBar.min.js"></script>
+  <script src="vendor/xdLocalStorage/xdLocalStorage.min.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div align="center" style="font-family: 'Roboto';">Carregando...</div>
+<div align="center">
+  <div id="container" style="width: 30%; height: 12px;"></div>
+</div>
+
+<script>
+        if (typeof(Storage) !== "undefined") {
+
+            var bar = new ProgressBar.Line('#container', {
+                strokeWidth: 3,
+                easing: 'easeInOut',
+                duration: 500,
+                color: '#006EBB',
+                trailColor: '#eee',
+                trailWidth: 1,
+                svgStyle: {width: '100%', height: '100%'}
+            });
+
+            var userData = null;
+            var appToken = null;
+            xdLocalStorage.init(
+            {
+                iframeUrl : RUBEUS_IFRAME_URL,
+                initCallback: function () {
+                    xdLocalStorage.getItem(appTokenKey, function (data) {
+                        appToken = data.value;
+                        bar.animate(0.25);
+
+                        xdLocalStorage.getItem(userDataKey, function (data) {
+                            userData = data.value;
+                            bar.animate(0.5);
+
+                            xdLocalStorage.removeItem(appTokenKey, function (data) {
+                                bar.animate(0.75);
+
+                                xdLocalStorage.removeItem(userDataKey, function (data) {
+                                    localStorage.setItem(appTokenKey, appToken);
+                                    localStorage.setItem(userDataKey, userData);
+
+                                    bar.animate(1, {}, function() {
+                                        document.location.href="/";
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        } else {
+            alert("Desculpe, esta aplicação não é suportada na versão do seu browser. Por favor, atualize.");
+        }
+    </script>
+</body>
+</html>

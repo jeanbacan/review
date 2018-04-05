@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/stoicflame/enunciate/master/top/src/main/resources/META-INF/enunciate-1.27.xsd">
+	<services>
+		<rest defaultRestSubcontext="/v1"></rest>
+	</services>
+	<modules>
+		<docs splashPackage="br.com.vivo.bcm.rest.v1.resources" copyright="VIVO" disableRestMountpoint="true" includeExampleXml="false" />
+		<!-- Desabilita a geração dos clients -->
+		<basic-app disabled="true" />
+		<c disabled="true" />
+		<csharp disabled="true" />
+		<java-client disabled="true" />
+		<jaxws-client disabled="true" />
+		<jaxws-ri disabled="true" />
+		<jaxws-support disabled="true" />
+		<jersey disabled="true" />
+		<obj-c disabled="true" />
+		<php disabled="true" />
+		<ruby disabled="true" />
+		<xml disabled="true" />
+	</modules>
+</enunciate>

@@ -1,0 +1,45 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+<div layout="row" flex="100">
+        <div flex="45"><span class="title-bar">Definições de Processo</span></div>
+        <div flex="55"></div>        
+    </div>
+</md-toolbar>
+
+<md-toolbar class="padding-content" layout-align="center center" layout="row" style="background: #f5f5f5; font-size: 14px; height: 20px;">
+</md-toolbar>
+
+<div></div>
+
+<div class="padding-content">
+    <form style="background-color : #FFFFFF" class="navbar-form navbar-right">
+        <md-table-container flex="100">
+            <table md-table ng-model="model.equipmentList" md-progress="promise">
+                <thead style="padding: 0px;" class="header-lists" md-head>
+                <tr md-row flex="100">
+                    <th md-column flex="20"><span class="header-lists"> Processo</span></th>
+                    <th md-column flex="50"><span class="header-lists">Versão</span></th>
+                    <th md-column flex="15"><span class="header-lists">Última Atualização</span></th>
+                    <th md-column flex="15"><span class="header-lists">Qtd. Projetos Descendentes</span></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr style="border :1|0" class="hover" md-auto-select md-row ng-repeat="processDefinition in service.processDefinitionList">
+                    <md-divider style="position: static"></md-divider>
+                    <td md-cell flex="20" class="td-list" style="padding-left: 35px;">{{processDefinition.name}}</td>
+                    <td md-cell flex="50" class="td-list"  style="padding-left: 15px;">{{processDefinition.version}}</td>
+                    <td md-cell flex="15" class="td-list" style="padding-left: 15px;">{{processDefinition.lastUpdate  | date:"dd/MM/yy"}}</td>
+                    <td md-cell flex="15" class="td-list"  style="padding-left: 15px;">{{processDefinition.qtdProjectsDescendent}}</td>                    
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </form>
+
+    <md-table-pagination md-limit="service.tableLimit" md-page="service.tablePage" md-total="{{service.tableTotal}}"
+                         md-on-paginate="onTablePaginate" md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por página:', of: 'de'}"/>
+
+</div>
+<md-button ng-class="{ visible: selectedTab==0 }" style="font-size: 18pt; position:absolute;" ng-click="newProcess($event,false)"
+           class="md-fab md-fab-bottom-right" aria-label="Adicionar processo">
+    +
+</md-button>

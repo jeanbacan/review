@@ -1,0 +1,93 @@
+<md-table-container>
+    <table md-table style="border: 1px solid #ddd">
+        <thead md-head>
+            <tr md-row flex="80">
+                <th ng-repeat="metadataCell in $ctrl.formItem.dataGridDTO.values" ng-if="$ctrl.formItem.dataGridDTO.values[$index].readable">
+                    <span ng-if="metadataCell.readable"style="font-size :9px">{{metadataCell.name}}</span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="line in $ctrl.formItem.gridValues.lines" ng-init="indexpai = $index">
+                <td ng-repeat="cel in line.values" style="padding-left:4px; padding-right:4px" ng-if="$ctrl.formItem.dataGridDTO.values[$index].readable">
+                    <div  ng-if="$ctrl.formItem.dataGridDTO.values[$index].readable">
+                        
+                        <md-input-container layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'DATE'">
+                            <md-datepicker class="gridDate" ng-required="$ctrl.formItem.dataGridDTO.values[$index].required"  ng-model="cel.value" ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable"></md-datepicker>
+                        </md-input-container>
+
+                        <md-input-container layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'STRING' && $ctrl.formItem.dataGridDTO.values[$index].readable" >
+                            <input  ng-model="cel.value" name="{{$ctrl.formItem.id}}" type="text"  ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable" ng-required="$ctrl.formItem.dataGridDTO.values[$index].required">
+                        </md-input-container>
+
+                        <div style="margin-top:-5px;min-width: 100px;" layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'COMBOBOX' && $ctrl.formItem.dataGridDTO.values[$index].readable">
+                            
+                            <md-select ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable" ng-model="cel.value"
+                                md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader">
+
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="searchTerm" type="search" placeholder="Buscar..." class="demo-header-searchbox" ng-keydown="$ctrl.stopPropagation($event)">
+                                </md-select-header>                                
+                                <md-option  ng-repeat="possibleValue in $ctrl.formItem.dataGridDTO.values[$index].comboBoxPossibleValues | filter:searchTerm" value="{{possibleValue.key}}">
+                                    {{possibleValue.value}}
+                                </md-option> 
+                            </md-select>
+                        </div>
+
+                        <md-input-container layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'LONG'">
+                            <input placeholder="Somente Inteiros" ng-model="cel.value" type="text" only-numbers ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable" ng-required="$ctrl.formItem.dataGridDTO.values[$index].required">
+                        </md-input-container>
+
+                        <md-input-container layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'DOUBLE'" >
+                            <input ng-model="cel.value" type="number" string-to-number ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable" ng-required="$ctrl.formItem.dataGridDTO.values[$index].required">
+                        </md-input-container>
+
+                        <md-input-container layout="column" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'ENUM'">
+                            <md-select class="md-block input-tasks" ng-model="cel.value"  ng-disabled="!$ctrl.formItem.dataGridDTO.values[$index].writable">
+                                <md-option  ng-repeat="(key,possibleValue) in $ctrl.formItem.dataGridDTO.values[$index].possibleValues" value="{{key}}">
+                                    {{possibleValue}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <div layout="column" style="margin-top:-3px" ng-if="$ctrl.formItem.dataGridDTO.values[$index].type === 'DOCUMENT' && $ctrl.formItem.dataGridDTO.values[$index].readable" >                        
+                            <div ng-if="cel.myDocumentVO === null && $ctrl.formItem.dataGridDTO.values[$index].writable">
+                                <div class='input-wrapper' align="center">
+                                    <label style="position: relative">
+                                        <input ng-model="cel.value" id="{{cel.key + indexpai}}" type="file" up-change="$ctrl.uploadShowFile($event, cel)"/>
+                                        <span style="font-size:11px;" ng-class="{'text-card-regular-warning' : documentRequired , 'text-card-regular' : !documentRequired } "> ARQUIVO </span></label>
+                                    </label>                                                    
+                                </div>
+                            </div>
+                            <div align="center" flex="100" layout="row" ng-if="cel.myDocumentVO !== null">
+                                <span>{{cel.myDocumentVO.name | limitTo : 15}}</span>
+                                <ng-md-icon icon="clear" style="fill: #757575;" ng-click="$ctrl.deleteGridFile(cel)" ng-if="$ctrl.formItem.dataGridDTO.values[$index].writable">
+                                    <md-tooltip>Excluir</md-tooltip>
+                                </ng-md-icon>
+
+                                <ng-md-icon ng-click="$ctrl.downloadFile(cel.myDocumentVO.uid)" icon="file_download" style="fill: #757575">
+                                    <md-tooltip>Baixar</md-tooltip>
+                                </ng-md-icon>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                 <div>
+                    <md-input-container ng-if="$ctrl.task.status ==='OPENED'" class="md-block" ng-click="$ctrl.removeRow($index, $ctrl.formItem)">
+                            <ng-md-icon icon="delete" style="fill: #757575">
+                                <md-tooltip>Remover linha</md-tooltip>
+                            </ng-md-icon>
+                    </md-input-container>
+                    </div>
+                </td>    
+            </tr>
+        </tbody>
+    </table>
+</md-table-container>
+
+<md-button ng-if="$ctrl.formItem.dataGridDTO.values[0].writable && !service.readOnly" class="md-primary" ng-click="$ctrl.addRow()">
+    <span class="link-bar">Adicionar linha</span>
+</md-button>
+

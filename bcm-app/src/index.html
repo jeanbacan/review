@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="bcm" ng-controller="AppCtrl">
+<head>
+    <title ng-bind="pageTitle"></title>
+
+    <meta charset="utf-8">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->   
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>"/>
+    <% }); %>
+
+    <script type="text/javascript" src="config/config.js"></script>
+</head>
+
+<body layout-fill class="{{bodylayout}}">
+<div id="overlay"></div>
+<div ui-view layout-fill></div>
+
+<!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+<script type="text/javascript" src="<%= file %>"></script>
+<% }); %>
+<script type="text/javascript" src="assets/js/angular-ladda.min.js"></script>
+
+</body>
+</html>

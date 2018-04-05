@@ -1,0 +1,318 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="60" layout="row">
+            <div>
+                <ng-md-icon icon="keyboard_backspace" style="fill: #757575; margin-right: 20px;" ng-click="goBack()">
+                    <md-tooltip>Voltar</md-tooltip>
+                </ng-md-icon>
+
+                <a style=" text-decoration: none  !important;" ui-sref="in.detailsInstance({id:service.selectedTask.businessKey})">
+                    <span class="title-bar">{{service.selectedTask.businessKey}}</span>
+                </a>
+            </div>
+            <div style=" margin-top: 5px; padding-left: 24px;" ng-show="service.selectedTask.lateDays > 0">
+                <span class="warning-days" > (Atrasado {{ service.selectedTask.lateDays}}  dias)</span>
+            </div>
+        </div>
+    </div>
+
+        <div flex="30"></div>
+        <div flex="10" ng-if="'CLOSED' !== service.selectedTask.status  && !service.isLoading && service.selectedTask.owner === undefined"
+            style="margin-top: -10px; " align="right">
+            <md-menu>
+                <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button">
+                    <ng-md-icon icon="more_vert"style="fill: #757575"></ng-md-icon>
+                </md-button>
+                <md-menu-content style="max-height: 350px ;width: 160px;" >
+                    <md-menu-item  align="left" ng-if="hasAuthorization('PERMIT_ALL')">
+                        <md-button ng-click="manageTask(service.selectedTask)">
+                            <span>Encaminhar</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="assignToMe(service.selectedTask.taskId)">
+                            Assumir
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </div>
+</md-toolbar>
+<div class="padding-content">
+    <md-card ng-show="!service.isLoading">
+        <md-card-content >
+            <div flex="100" layout="row">
+                <span class="text-information">Informações do BC</span>
+            </div> <br/>
+
+            <div>
+                <md-divider style="margin: -10px;"></md-divider>
+            </div>
+            <br/>
+            <div layout="row"  layout-wrap>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Tarefa</span><br/>
+                        <span class="text-information">{{service.selectedTask.name}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Grupo</span><br/>
+                        <span class="text-information">{{service.selectedTask.candidateGroupDescription}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Responsável</span><br/>
+                        <span class="text-information">{{service.selectedTask.owner.name}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Abertura investimento</span><br/>
+                        <span class="text-information">{{service.selectedTask.createProcessTime  | date:"dd/MM/yy"}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Abertura tarefa</span><br/>
+                        <span class="text-information">{{service.selectedTask.createTime  | date:"dd/MM/yy"}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+                <div flex="33">
+                    <div  flex="95" style="padding-top: 11px;" >
+                        <span class="header-information">Conclusão prevista</span><br/>
+                        <span class="text-information">{{service.selectedTask.dueDate  | date:"dd/MM/yy"}}</span>
+                        <md-divider></md-divider>
+                    </div>
+                </div>
+
+                <div flex="33" ng-repeat="header in service.selectedTask.headers"  >
+
+                    <div flex="95" style="padding-top: 11px;" ng-if="header.type !== 'DATE' && header.type !== 'ENUM' && header.type !== 'DOCUMENT' && header.type !== 'COMBOBOX'">
+                        <span class="header-information">{{header.name}}</span><br/>
+                        <span class="text-information">{{header.value}}</span>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div flex="95" style="padding-top: 11px;" ng-if="header.type === 'COMBOBOX'">
+                        <span class="header-information">{{header.name}}</span><br/>
+                        <span  class="text-information">{{header.comboBoxPossibleValues[0].value}}</span>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div flex="95" style="padding-top: 11px;" ng-if="header.type === 'ENUM'">
+                        <span class="header-information">{{header.name}}</span><br/>
+                        <span  class="text-information">{{header.possibleValues[header.value]}}</span>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div flex="95" style="padding-top: 11px;" ng-if="header.type === 'DATE'">
+                        <span class="header-information">{{header.name}}</span><br/>
+                        <span class="text-information">{{header.value  | date:"dd/MM/yy"}}</span>
+                        <md-divider></md-divider>
+                    </div>
+
+                    <div layout="column" flex="95" style="margin-top: 8px;" ng-if="header.type === 'DOCUMENT'" >
+
+                        <div flex="95" ng-show="header.myDocumentVO !== null">
+                            <div><span class="header-information">{{header.name}}</span><br/></div>
+                            <div layout="row">
+                                <div flex="90">
+                                    <span  class="text-information">{{header.myDocumentVO.name}}</span>
+                                </div>
+
+                                <div  flex="5">
+                                    <ng-md-icon icon="file_download" style="fill: #757575; margin-right: 20px;" ng-click="downloadFile(header.myDocumentVO.documentManagerId)">
+                                        <md-tooltip>Baixar</md-tooltip>
+                                    </ng-md-icon>
+                                </div>
+                            </div>
+                            <md-divider style=" margin-top: 4px;" flex="100"></md-divider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+    <iframe style="visibility:hidden;height:1px;width:1px;" id="iframeFile"></iframe>
+
+    <div class="spinner"  ng-show="service.isLoading">
+        <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+    </div>
+</div>
+<div class="padding-content" style="position: relative">
+
+    <!--<div ng-if="service.selectedTask.owner === undefined" style="position: absolute; z-index: 1; background-color: #a5a5a5; opacity: 0.3; width: 73%; height: 94%; margin-left: 7px;"></div>-->
+
+    <md-card ng-show="!service.isLoading">
+        <md-card-content>
+            <form name="taskForm" ng-submit="confirmCloseTask($event,taskForm)" novalidate>
+                <div flex="100" layout="row">
+                    <div flex="40"><span class="text-information">Dados da tarefa</span></div>
+                    <div flex="60"><span class="warning-days" ng-if="service.selectedTask.owner === undefined" > *Você não é o responsável por essa tarefa</span></div>
+                </div> <br/>
+                <div>
+                    <md-divider style="margin: -10px;"></md-divider>
+                </div>
+                <br/>
+                <div layout="row" layout-wrap>
+                    <div flex="20" ng-repeat="formIten in service.selectedTask.formItens" ng-if="formIten.readable && formIten.type !== 'DATAGRID'">
+
+                        <div flex="95" ng-if="formIten.readable && formIten.type === 'COMBOBOX'">
+                            <md-input-container layout="column">
+                                <label>{{formIten.name}}</label>
+                                <md-select  class="md-block input-tasks"  ng-model="formIten.value"  ng-change="listening(formIten)">
+                                    <md-option ng-required="formIten.required" ng-repeat="(key,possibleValue) in formIten.possibleValues" value="{{key}}">
+                                        {{possibleValue}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95" ng-if="formIten.readable && formIten.type === 'STRING'" >
+                            <md-input-container layout="column">
+                                <label>{{formIten.name}}</label>
+                                <input ng-model="formIten.value" name="{{formIten.id}}" type="text"  ng-disabled="!formIten.writable" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95" ng-if="formIten.readable && formIten.type === 'LONG'">
+                            <md-input-container layout="column" ng-if="formIten.id === 'idQuantidadeArea'">
+                                <label>{{formIten.name}}</label>
+                                <input placeholder="Somente Inteiros" name="quantidadeArea" ng-change="changeQuantidadeArea(formIten.value)" ng-model="formIten.value" type="text" only-numbers ng-disabled="!formIten.writable" ng-required="formIten.required">
+                                <div ng-messages="taskForm.quantidadeArea.$error" ng-show="taskForm.quantidadeArea.$dirty">
+                                    <div ng-message="size">Limite máximo de 15 BC's</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container layout="column" ng-if="formIten.id !== 'idQuantidadeArea'">
+                                <label>{{formIten.name}}</label>
+                                <input placeholder="Somente Inteiros" ng-model="formIten.value" type="text" only-numbers ng-disabled="!formIten.writable" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95" ng-if="formIten.readable && formIten.type === 'DATE'">
+                            <md-input-container layout="column">
+                                <label style="left:30px !important;">{{formIten.name}}</label>
+                                <md-datepicker class="fieldDate" ng-required="formIten.required" ng-model="formIten.value" ng-disabled="!formIten.writable"></md-datepicker>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95" ng-if="formIten.readable && formIten.type === 'CHECKLIST'">
+                            <md-input-container  layout="column">
+                                <label>{{formIten.name}}</label>
+                                <md-select ng-required="formIten.required" ng-model="formIten.value" multiple ng-disabled="!formIten.writable">
+                                    <md-optgroup>
+                                        <md-option ng-repeat="(key,possibleValue) in formIten.possibleValues" value="{{key}}">{{possibleValue |  limitTo : 26 }}</span>
+
+                                        </md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95"  ng-if="formIten.readable && formIten.type === 'ENUM'">
+                            <md-input-container layout="column">
+                                <label>{{formIten.name}}</label>
+                                <md-select class="md-block input-tasks"   ng-required="formIten.required" ng-model="formIten.value"  ng-disabled="!formIten.writable">
+                                    <md-option  ng-repeat="(key,possibleValue) in formIten.possibleValues" value="{{key}}">
+                                        {{possibleValue}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95"  ng-if="formIten.readable && formIten.type === 'BOOLEAN'" >
+                            <md-input-container layout="column">
+                                <md-checkbox class="md-block input-tasks"  ng-model="formIten.value"  ng-disabled="!formIten.writable" ng-required="formIten.required">
+                                    {{formIten.name}}
+                                </md-checkbox>
+                            </md-input-container>
+                        </div>
+
+                        <div layout="column" flex="95" style="margin-top: 5px;" ng-if="formIten.type === 'DOCUMENT'" >
+                            <div style=" margin-top: -16px;padding: 7px;">
+                                <span  ng-class="{'label-warning' : documentRequired,'label-normal' : !documentRequired }">{{formIten.name}}</span>
+                                <span style=" font-size: 12px; color: #B7B7B7; font-family: Verdana,sans-serif;" ng-if="formIten.required">*</span>
+                            </div>
+                            <div flex="95">
+
+                                <div ng-show="formIten.myDocumentVO === null && formIten.value === undefined || formIten.myDocumentVO === undefined  && formIten.value === undefined " class='input-wrapper'>
+                                    <label   for='{{formIten.id}}'>
+                                        <span ng-class="{'text-card-regular-warning' : documentRequired , 'text-card-regular' : !documentRequired } "> UPLOAD DE ARQUIVO </span></label>
+                                    <input id='{{formIten.id}}' type='file' value='' onchange="angular.element(this).scope().uploadShowFile(this)"/>
+                                    <span id='file-name'></span>
+                                    <md-divider ng-class="{'divider-warning' : documentRequired,'divider-normal' : !documentRequired }" style=" margin-top: 4px;" flex="100"></md-divider>
+                                </div>
+                                <div  flex="100" >
+                                    <div layout="row">
+                                        <div flex="90" style="margin-top: auto;">
+                                            <span >{{formIten.myDocumentVO.name | limitTo : 20}}</span>
+                                        </div>
+                                        <div  flex="5" style="margin-top: auto;" ng-show="formIten.myDocumentVO.name !== undefined && formIten.myDocumentVO.name !== null && formIten.myDocumentVO.documentPath !== undefined">
+                                            <ng-md-icon icon="file_download" style="fill: #757575; margin-right: 20px;" ng-click="downloadFile(formIten.myDocumentVO.documentManagerId)">
+                                                <md-tooltip>Baixar</md-tooltip>
+                                            </ng-md-icon>
+                                        </div>
+
+                                        <div  flex="5" style="margin-top: auto;"  ng-show="formIten.myDocumentVO.name !== undefined && formIten.myDocumentVO.name !== null">
+                                            <ng-md-icon icon="clear" style="fill: #757575; margin-right: 20px;" ng-click="deleteFile(formIten)">
+                                                <md-tooltip>Excluir</md-tooltip>
+                                            </ng-md-icon>
+                                        </div>
+                                    </div>
+                                    <div flex="100" ng-show="formIten.myDocumentVO.name !== undefined && formIten.myDocumentVO.name !== null">
+                                        <md-divider style=" margin-top: -3px;" ></md-divider>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div flex="95"  ng-if="formIten.readable && formIten.type === 'DOUBLE'">
+                            <md-input-container layout="column">
+                                <label>{{formIten.name}}</label>
+                                <input ng-model="formIten.value" string-to-number  type="number" ng-disabled="!formIten.writable" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div ng-repeat="formIten in service.selectedTask.formItens" ng-if="formIten.type === 'DATAGRID'">
+                    <grid form-item="formIten"></grid>
+                    <br/>
+                    <br/>
+                </div>
+
+                <div  ng-if="service.selectedTask.owner !== undefined" layout="row" flex="100" ng-if="'CLOSED' !== service.selectedTask.status ">
+                    <div flex="80"></div>
+                    <div flex="40" align="right">
+                        <md-button ng-click="downloadAllFiles(service.selectedTask)" aria-label="Baixar Arquivos" class="md-primary">
+                               <span class="link-bar" style="color: #AEAEAE;">Baixar Arquivos</span>
+                         </md-button>
+                         <md-button ng-click="saveTaskDraft(importFileForm)" class="md-primary">
+                               <span class="link-bar" style="color: #AEAEAE;">Salvar</span>
+                         </md-button>
+                        <md-button ng-disabled="service.isLoading" class="md-primary" ng-click="goBack()">
+                            <span class="link-bar" style="color: #AEAEAE;">CANCELAR</span>
+                        </md-button>
+                        <md-button ng-disabled="service.isLoading" class="md-primary" ng-click="unassign()">
+                            <span class="link-bar" style="color: #AEAEAE;">RENUNCIAR</span>
+                        </md-button>
+                        <md-button type="submit" ng-disabled="service.isLoading" class="md-primary" >
+                            <span class="link-bar">CONCLUIR</span>
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+
+</div>

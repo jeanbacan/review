@@ -1,0 +1,86 @@
+<div layout="column" layout-fill>
+
+    <md-toolbar class="md-hue-2">
+        <div layout="row" layout-align="start center" class="md-toolbar-tools-bottom inset" style="height: 80px;">
+
+            <md-button ng-click="toggleMenu();" class="md-icon-button" aria-label="Open menu">
+                <ng-md-icon icon="menu" style="fill: white"></ng-md-icon>
+            </md-button>
+
+            <div style="height: 100%" layout="row" layout-align="start center">
+                <img src="../assets/bcm/logo-header.png" alt=""  />
+            </div>
+
+            <div flex></div>
+            <!--div align="right" style="margin-top: -5px">
+                <span style="font-size: 14px;font-family: Roboto">{{me.username}} - {{me.name}}</span>
+            </div-->
+            <app-info></app-info>
+
+            <div align="right">
+                <md-button ng-click="logout()"><span style="color: white;">SAIR</span></md-button>
+            </div>
+
+        </div>
+    </md-toolbar>
+
+    <div class="container" layout="row" flex>
+
+        <md-sidenav class="md-whiteframe-16dp" layout="column" style="background: #333333;" md-component-id="menuLeft">
+            <div style="height: 68px;" layout="row" layout-align="start center">
+                <md-button ng-click="toggleMenu();" layout-align="end end" class="md-icon-button" aria-label="Open menu">
+                    <ng-md-icon icon="arrow_back" style="fill: white"></ng-md-icon>
+                </md-button>
+
+                <img src="../assets/bcm/logo-header.png" alt="" style="width: auto; height: 65%" />
+            </div>
+
+            <md-divider class="divider-menu"></md-divider>
+
+            <div layout="column" flex>
+
+                <!-- menu -->
+                <md-sidemenu>
+                    <md-sidemenu-group ng-repeat="group in menu_groups">
+
+                        <md-divider ng-hide="!group.title.length || !group.items.length"></md-divider>
+                        <md-subheader class="md-no-sticky" ng-hide="!group.title.length || !group.items.length">{{ group.title }}</md-subheader>
+
+                        <!-- items -->
+                        <div ng-repeat="item in group.items" layout="column">
+                            <md-sidemenu-button ng-if="item.sub_items == null" href="{{item.href}}" ng-click="toggleMenu()">{{item.title}}</md-sidemenu-button>
+
+                            <md-sidemenu-content  md-heading="{{item.title}}" md-arrow="true" ng-if="item.sub_items != null">
+                                <md-sidemenu-button ng-repeat="sub in item.sub_items" href="{{sub.href}}" ng-click="toggleMenu()">{{sub.title}}</md-sidemenu-button>
+                            </md-sidemenu-content>
+                        </div>
+
+                    </md-sidemenu-group>
+                </md-sidemenu>
+                <!-- menu -->
+
+            </div>
+
+            <div style="text-align: center; padding-bottom: 15px;">
+                <img src="/assets/images/logo_menu_telefonica_vivo.png" style="width: 146px" class="md-card-image" alt="Logo Telefônica Vivo">
+            </div>
+        </md-sidenav>
+
+        <md-content id="content" flex style="background: #FAFAFA;">
+            <md-whiteframe class="md-whiteframe-16dp" layout-fill>
+                <div ui-view layout-fill></div>
+            </md-whiteframe>
+        </md-content>
+    </div>
+
+    <footer>
+        <div layout="row" layout-align="space-between center">
+            <div>
+                <img src="/assets/images/logo_telefonica_vivo.png" class="md-card-image" alt="Logo Telefônica Vivo">
+            </div>
+            <div>
+                <img src="/assets/images/logo_viva_tudo.png" class="md-card-image" alt="Logo Viva Tudo">
+            </div>
+        </div>
+    </footer>
+</div>

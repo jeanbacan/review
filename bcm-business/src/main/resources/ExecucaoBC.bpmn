@@ -1,0 +1,1642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.bizagi.com/definitions/_2017041105834" id="_2017041105834">
+  <collaboration id="Collaboration">
+    <participant id="Id_b6eec2fe-8f62-41ef-9a46-371f737f17d5" name="BC" processRef="execucaoBC_process"></participant>
+  </collaboration>
+  <signal id="sinalRevisarBC" name="Revisar" activiti:scope="processInstance"></signal>
+  <process id="execucaoBC_process" name="BC" isExecutable="true">
+    <laneSet id="laneSet_execucaoBC_process">
+      <lane id="Id_f0bad2b8-9324-43fd-ae8e-732feb8bc520" name="Definição de arranjo físico">
+        <flowNodeRef>startProcess</flowNodeRef>
+        <flowNodeRef>Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e</flowNodeRef>
+        <flowNodeRef>Id_9995820f-6620-4a41-948e-d444dc5b3909</flowNodeRef>
+        <flowNodeRef>Id_5f68644e-26fd-459c-afd3-ce97f0df3460</flowNodeRef>
+        <flowNodeRef>exclusivegateway1</flowNodeRef>
+        <flowNodeRef>scripttask1</flowNodeRef>
+        <flowNodeRef>exclusivegateway2</flowNodeRef>
+      </lane>
+      <lane id="Id_ad4ef9f0-6355-4be3-9018-b0f7467181e7" name="B2B">
+        <flowNodeRef>Id_ea3d5eb5-c028-4284-bd15-944f60248251</flowNodeRef>
+        <flowNodeRef>validaArranjoB2B</flowNodeRef>
+        <flowNodeRef>Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45</flowNodeRef>
+        <flowNodeRef>Id_4ef0381a-e1ee-4d75-8720-83384c70e76e</flowNodeRef>
+      </lane>
+      <lane id="Id_7d1b5405-5bd3-413f-b2bf-8ccc9a5926e6" name="B2C">
+        <flowNodeRef>validaArranjoB2C</flowNodeRef>
+        <flowNodeRef>exclusivegateway3</flowNodeRef>
+      </lane>
+      <lane id="Id_90df606e-df91-4efe-8c93-dd043329aaed" name="Churn e PDD">
+        <flowNodeRef>Id_fbea1c8f-d076-4947-9c8c-9d3a47232618</flowNodeRef>
+      </lane>
+      <lane id="Id_6ab685f3-af2f-46f9-834a-3d3dd176f371" name="Custos Rede Interna">
+        <flowNodeRef>Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02</flowNodeRef>
+      </lane>
+      <lane id="Id_01f66eae-a932-40a8-8e15-f7a6d9626ccb" name="Resultado FInanceiro">
+        <flowNodeRef>Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f</flowNodeRef>
+        <flowNodeRef>Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8</flowNodeRef>
+        <flowNodeRef>Id_3d53273d-190a-40b5-9700-77bef939bd8a</flowNodeRef>
+      </lane>
+      <lane id="Id_e73bc589-1636-4372-829a-ec1da549e212" name="Obra">
+        <flowNodeRef>Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd</flowNodeRef>
+        <flowNodeRef>Id_7acdc52d-a6fc-4499-8e90-9f78566a596c</flowNodeRef>
+      </lane>
+      <lane id="laneCDG" name="CDG">
+        <flowNodeRef>taskAprovacaoCDG</flowNodeRef>
+        <flowNodeRef>exclusivegatewayCDG</flowNodeRef>
+      </lane>
+      <lane id="laneMarketing" name="MARKETING">
+        <flowNodeRef>taskPriorizacaoObras</flowNodeRef>
+      </lane>
+    </laneSet>
+    <userTask id="Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e" name="Gerar demanda" activiti:candidateGroups="REDE_EXTERNA" activiti:dueDate="P1D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+        
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" required="true">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    	</activiti:formProperty>
+    	    	
+        <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:taskListener event="complete" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
+          <activiti:field name="script">
+            <activiti:string><![CDATA[              
+              task.setVariable('revisado', 'idSim');
+
+              if (task.getVariable('sugerirInclusaoArea') == null){
+                task.setVariable('sugerirInclusaoArea', 'idNao');
+              }
+
+            ]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="language">
+            <activiti:string><![CDATA[groovy]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="Id_5f68644e-26fd-459c-afd3-ce97f0df3460" name="Custos Rede Externa" activiti:candidateGroups="REDE_EXTERNA" activiti:dueDate="P5D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    	</activiti:formProperty>
+    	<activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+    	        
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRE" name="Custos RE" type="document" variable="fileCustosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRE" name="Custos Compartilhados RE" type="document" variable="fileCustosCompartilhadosRE"></activiti:formProperty>                
+  		<activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>        
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+    <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="Id_fbea1c8f-d076-4947-9c8c-9d3a47232618" name="PDD e Churn" activiti:candidateGroups="CHURN_PDD" activiti:dueDate="P10D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    </activiti:formProperty>
+    <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="fileCEP" name="CEP'S" type="document" variable="fileCEP"></activiti:formProperty>
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <parallelGateway id="Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8"></parallelGateway>
+    <userTask id="Id_3d53273d-190a-40b5-9700-77bef939bd8a" name="Gerar resultado financeiro" activiti:candidateGroups="RESULTADO_FINANCEIRO" activiti:dueDate="P7D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    </activiti:formProperty>
+    <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        
+  	    <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+        
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRE" name="Custos RE" type="document" variable="fileCustosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRE" name="Custos Compartilhados RE" type="document" variable="fileCustosCompartilhadosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRI" name="Custos RI" type="document" variable="fileCustosRI"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRI" name="Custos Compartilhados RI" type="document" variable="fileCustosCompartilhadosRI"></activiti:formProperty>
+        
+        <activiti:formProperty id="idResultadoFinanceiro" name="Resultado Financeiro" type="document" variable="planilhaResultadoFinanceiro"></activiti:formProperty>
+        <activiti:formProperty id="idRecomendacao" name="Recomendação" type="enum" variable="recomendacao" required="true">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado"></activiti:formProperty>             
+
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f" name="Qual o status do investimento?"></exclusiveGateway>
+    <userTask id="Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd" name="Acompanhamento da obra" activiti:candidateGroups="OBRA" activiti:dueDate="P3D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+    	<activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicaoSobre" name="Sobreposição + Expansão"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>        
+        	    
+	    <activiti:formProperty id="ra" name="RA" type="long" variable="ra" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda" writable="false"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono" writable="false"></activiti:formProperty>
+        
+ 		<activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central"></activiti:formProperty>
+        
+        <!-- LIBERACAO 1 -->
+        <!-- <activiti:formProperty id="anoLiberacao1" name="Ano" type="enum" variable="anoLiberacao1">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="mesLiberacao1" name="Ano" type="enum" variable="mesLiberacao1">
+        	<activiti:value id="Janeiro" name="Janeiro"></activiti:value>
+          	<activiti:value id="Fevereiro" name="Fevereiro"></activiti:value>
+          	<activiti:value id="Março" name="Março"></activiti:value>
+          	<activiti:value id="Abril" name="Abril"></activiti:value>
+          	<activiti:value id="Maio" name="Maio"></activiti:value>
+          	<activiti:value id="Junho" name="Junho"></activiti:value>
+          	<activiti:value id="Julho" name="Julho"></activiti:value>
+          	<activiti:value id="Agosto" name="Agosto"></activiti:value>
+          	<activiti:value id="Setembro" name="Setembro"></activiti:value>
+          	<activiti:value id="Outubro" name="Outubro"></activiti:value>
+          	<activiti:value id="Novembro" name="Novembro"></activiti:value>
+          	<activiti:value id="Dezembro" name="Dezembro"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="semanaLiberacao1" name="Ano" type="enum" variable="semanaLiberacao1" writable="false">
+        	<activiti:value id="W1" name="W1"></activiti:value>
+          	<activiti:value id="W2" name="W2"></activiti:value>
+          	<activiti:value id="W3" name="W3"></activiti:value>
+          	<activiti:value id="W4" name="W4"></activiti:value>
+          	<activiti:value id="W5" name="W5"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="dataEntrega1" name="Data entrega (1)" type="date" variable="dataEntrega1" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="facilidadesPrevistas1" name="Facilidades previstas (1)" type="date" variable="facilidadesPrevistas1"></activiti:formProperty>
+        <activiti:formProperty id="facilidadesEntrega1" name="Facilidades entregas (1)" type="date" variable="facilidadesEntrega1"></activiti:formProperty>
+        <activiti:formProperty id="observacaoEntrega1" name="Observação entrega (1)" type="date" variable="observacaoEntrega1"></activiti:formProperty>-->
+        
+        <activiti:formProperty id="totalFacilidadesEntregues" name="Total facilidades entregues" type="string" variable="totalFacilidadesEntregues"></activiti:formProperty>
+        <activiti:formProperty id="observacaoEntregaTotal" name="Observação entrega total" type="string" variable="observacaoEntregaTotal"></activiti:formProperty>
+        
+        <activiti:formProperty id="gridLiberacoesObra" name="Liberações" type="datagrid" variable="gridLiberacoesObra" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Ano&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Mes&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Semana&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Data entrega&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;FacilidadePrevista&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;FacilidadeEntrega&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >        
+         <activiti:dataGridCell headerName="Ano" formType="enum" objAttribute="Ano" valuesAvailables="2018,2019,2020,2021,2222" ></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Mês" formType="enum" objAttribute="Mes" valuesAvailables="Janeiro,Fevereiro,Março,Abril,Mario,Junho,Julho,Agosto,Setembro,Outburo,Novembro,Dezembro" ></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Semana" formType="enum" objAttribute="Semana" valuesAvailables="W1,W2,W3,W4,W5" ></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Data Entrega" formType="date" objAttribute="Data"></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Facilidades previstas" formType="long" objAttribute="FacilidadePrevista"></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Facilidades entregues" formType="long" objAttribute="FacilidadeEntrega"></activiti:dataGridCell>
+         <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao"></activiti:dataGridCell>
+        </activiti:formProperty>
+        
+    	<activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoPrevETP" name="Previsão Conclusão ETP" type="date" variable="idDataConclusaoPrevETP" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoETP" name="Conclusão ETP" type="date" variable="dataConclusaoETP" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="observacaoETP" name="Observação ETP" type="string" variable="observacaoETP"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoPrevBase" name="Previsão Conclusão Base" type="date" variable="idDataConclusaoPrevBase" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoBase" name="Conclusão Base" type="date" variable="dataConclusaoBase" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="observacaoBase" name="Observação Base" type="string" variable="observacaoBase"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoPrevProjeto" name="Previsão Conclusão Projeto" type="date" variable="idDataConclusaoPrevProjeto" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoProjeto" name="Conclusão Projeto" type="date" variable="dataConclusaoProjeto" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="observacaoProjeto" name="Observação Projeto" type="string" variable="observacaoProjeto"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoPrevLicenca" name="Previsão Conclusão Licença" type="date" variable="idDataConclusaoPrevLicenca" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoLicenca" name="Conclusão Licença" type="date" variable="dataConclusaoLicenca" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="observacaoLicenca" name="Observação Licença" type="string" variable="observacaoLicenca"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoPrevConstrucao" name="Previsão Conclusão Construção" type="date" variable="idDataConclusaoPrevArmario" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="idDataConclusaoConstrucao" name="Conclusão Construção" type="date" variable="dataConclusaoArmario" datePattern="dd/MM/yyyy"></activiti:formProperty>
+        <activiti:formProperty id="observacaoConstrucao" name="Observação Construção" type="string" variable="observacaoConstrucao"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="Id_7acdc52d-a6fc-4499-8e90-9f78566a596c" name="Fim"></endEvent>
+    <parallelGateway id="Id_9995820f-6620-4a41-948e-d444dc5b3909"></parallelGateway>
+    <userTask id="Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02" name="Custos Rede Interna" activiti:candidateGroups="REDE_INTERNA" activiti:dueDate="P9D">
+      <extensionElements>
+      	<!-- HEADERS -->
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    	</activiti:formProperty>
+    	<activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        <!-- HEADERS END -->
+        <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+    	
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRE" name="Custos RE" type="document" variable="fileCustosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRE" name="Custos Compartilhados RE" type="document" variable="fileCustosCompartilhadosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRI" name="Custos RI" type="document" variable="fileCustosRI"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRI" name="Custos Compartilhados RI" type="document" variable="fileCustosCompartilhadosRI"></activiti:formProperty>
+        
+   		<activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+    <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="validaArranjoB2B" name="Abrir BC" activiti:candidateGroups="B2B" activiti:dueDate="P2D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" required="true">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+	    </activiti:formProperty>
+	    
+	    <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+	    
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCEP" name="CEP'S" type="document" variable="fileCEP"></activiti:formProperty>
+        
+  		<activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+    	<activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="Id_ea3d5eb5-c028-4284-bd15-944f60248251" name="Projeto B2B? Ou B2C Aprovou"></exclusiveGateway>
+    <userTask id="validaArranjoB2C" name="Abrir BC" activiti:candidateGroups="B2C" activiti:dueDate="P2D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" required="true">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    </activiti:formProperty>  
+    	    
+    <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+   	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+   	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+   	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+   	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+   	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+   	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+   	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+   	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+   	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+   	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+   	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+   	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+    
+    <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+    <activiti:formProperty id="fileCEP" name="CEP'S" type="document" variable="fileCEP"></activiti:formProperty>
+    
+	<activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+       <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+       <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+       <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+       <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+     </activiti:formProperty>
+     <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+     <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+       <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+       <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+       <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+     </activiti:formProperty>
+     <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+     <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+       <activiti:value id="idNao" name="Não"></activiti:value>
+       <activiti:value id="idSim" name="Sim"></activiti:value>
+     </activiti:formProperty>
+     <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+       <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+         <activiti:value id="idQ1" name="Q1"></activiti:value>
+         <activiti:value id="idQ2" name="Q2"></activiti:value>
+         <activiti:value id="idQ3" name="Q3"></activiti:value>
+         <activiti:value id="idQ4" name="Q4"></activiti:value>
+       </activiti:formProperty>
+       <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+    <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45" name="B2C teve interesse e aprovou"></exclusiveGateway>
+    <exclusiveGateway id="Id_4ef0381a-e1ee-4d75-8720-83384c70e76e"></exclusiveGateway>
+    <sequenceFlow id="Id_fe61f6e8-e422-49f5-b2f6-d2ad5d936cc3" sourceRef="Id_9995820f-6620-4a41-948e-d444dc5b3909" targetRef="Id_fbea1c8f-d076-4947-9c8c-9d3a47232618"></sequenceFlow>
+    <sequenceFlow id="Id_281933dc-d394-4e94-9719-eefa8a4922f8" sourceRef="Id_9995820f-6620-4a41-948e-d444dc5b3909" targetRef="Id_5f68644e-26fd-459c-afd3-ce97f0df3460"></sequenceFlow>
+    <sequenceFlow id="Id_f391bbc5-9594-4202-9ebc-ed9e94bc94c5" sourceRef="Id_5f68644e-26fd-459c-afd3-ce97f0df3460" targetRef="Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02"></sequenceFlow>
+    <sequenceFlow id="Id_c815d5a3-3fa2-41a7-9505-16366ab46c98" sourceRef="Id_fbea1c8f-d076-4947-9c8c-9d3a47232618" targetRef="Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8"></sequenceFlow>
+    <sequenceFlow id="Id_8edd9787-3e79-4900-ad91-8584a2e3bb97" sourceRef="Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8" targetRef="Id_3d53273d-190a-40b5-9700-77bef939bd8a"></sequenceFlow>
+    <sequenceFlow id="Id_47df72d1-6396-4312-ba78-271413426b80" sourceRef="Id_3d53273d-190a-40b5-9700-77bef939bd8a" targetRef="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f"></sequenceFlow>
+    <sequenceFlow id="Id_7552081d-fee9-4286-bfc8-c6504f1d42c2" sourceRef="Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd" targetRef="Id_7acdc52d-a6fc-4499-8e90-9f78566a596c"></sequenceFlow>
+    <sequenceFlow id="Id_3e52720e-ac5d-4653-9312-c942817df366" sourceRef="Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02" targetRef="Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8"></sequenceFlow>
+    <sequenceFlow id="Id_83645041-de55-4f20-954d-e3ad19376b2d" sourceRef="validaArranjoB2B" targetRef="Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45"></sequenceFlow>
+    <sequenceFlow id="Id_b3b9f9e5-add5-424b-9112-d636b8a7145e" sourceRef="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f" targetRef="taskAprovacaoCDG">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${recomendacao == 'idRecomendado' || recomendacao == 'idNaoRecomendadoObrigatorio'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Id_51d55512-8e9f-4b5d-9324-fe2baff04c62" name="Não" sourceRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251" targetRef="validaArranjoB2C">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2C'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Id_50bd562b-89e2-466d-8f89-d46e6e9fd644" name="Não" sourceRef="Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45" targetRef="validaArranjoB2C">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2B' && tipoInvestimento == 'idCentral'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Id_4ddf6f28-033c-4a42-8c94-b3d45c589c99" name="Sim" sourceRef="Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45" targetRef="Id_4ef0381a-e1ee-4d75-8720-83384c70e76e">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2C' || tipoInvestimento == 'idOutros'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="Id_cb4547fc-6013-46be-b607-a5bffe87511e" sourceRef="Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e" targetRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251"></sequenceFlow>
+    <startEvent id="startProcess">
+      <extensionElements>
+      <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" required="true" metadata="{'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" required="true" metadata="{'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" required="true" metadata="{'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="sugerirInclusaoArea" name="Sugerir inclusão de área?" type="enum" variable="sugerirInclusaoArea" required="true">
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+          <activiti:value id="idNao" name="Não"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idUserGroup" name="Nome do Grupo" type="string" variable="idUserGroup" readable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" required="true">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Facilidade" formType="double" objAttribute="Facilidade" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario" readable="true"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Facilidade" formType="double" objAttribute="Facilidade" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+         <activiti:executionListener event="start" class="org.activiti.engine.impl.bpmn.listener.ScriptExecutionListener" >
+		  <activiti:field name="script">
+		    <activiti:string>
+		      if (execution.getVariable('tipoInvestimento') == null){
+		      	execution.setVariable('tipoInvestimento', execution.getVariable('tipoInvestimentoOld'));
+		      }
+		    </activiti:string>
+		  </activiti:field>
+		  <activiti:field name="language" stringValue="groovy" />		  
+		</activiti:executionListener>		        
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow2" sourceRef="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f" targetRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${recomendacao == 'idRevisar'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="Id_52e9e4ca-e4e2-45a7-acd8-a977153c0943" sourceRef="exclusivegateway1" targetRef="Id_9995820f-6620-4a41-948e-d444dc5b3909"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="Id_4ef0381a-e1ee-4d75-8720-83384c70e76e" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${revisado == 'idNao' && tipoInvestimento != 'idOutros'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask1" name="Service Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>
+        execution.setVariable('revisado', 'idSim');
+      </script>
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" sourceRef="startProcess" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoInvestimento != 'idOutros'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway2" targetRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoInvestimento == 'idOutros'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251" targetRef="validaArranjoB2B">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2B'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="validaArranjoB2C" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway3" targetRef="validaArranjoB2B">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2C' && tipoInvestimento == 'idCentral'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway3" targetRef="Id_4ef0381a-e1ee-4d75-8720-83384c70e76e">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${idUserGroup == 'B2B' || tipoInvestimento == 'idOutros'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f" targetRef="Id_7acdc52d-a6fc-4499-8e90-9f78566a596c">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${recomendacao == 'idNaoRecomendado'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="taskAprovacaoCDG" name="Aprovação CDG" activiti:dueDate="P7D" activiti:candidateGroups="CDG">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    </activiti:formProperty>
+    <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>     
+        	    
+	    <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+        
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRE" name="Custos RE" type="document" variable="fileCustosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRE" name="Custos Compartilhados RE" type="document" variable="fileCustosCompartilhadosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRI" name="Custos RI" type="document" variable="fileCustosRI"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRI" name="Custos Compartilhados RI" type="document" variable="fileCustosCompartilhadosRI"></activiti:formProperty>
+        <activiti:formProperty id="idResultadoFinanceiro" name="Resultado Financeiro" type="document" variable="planilhaResultadoFinanceiro"></activiti:formProperty>
+        <activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+                
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação" type="enum" variable="aprovacaoCDG" required="true">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG"></activiti:formProperty>
+
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" writable="false">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra" writable="false">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra" writable="false">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegatewayCDG" name="Aprovação CDG?"></exclusiveGateway>
+    <sequenceFlow id="flow15" sourceRef="taskAprovacaoCDG" targetRef="exclusivegatewayCDG"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="exclusivegatewayCDG" targetRef="taskPriorizacaoObras">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aprovacaoCDG == 'idAprovado'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegatewayCDG" targetRef="Id_3d53273d-190a-40b5-9700-77bef939bd8a">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aprovacaoCDG == 'idRevisar' || aprovacaoCDG == 'idReprovado'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="taskPriorizacaoObras" name="Priorização de Obras" activiti:candidateGroups="MARKETING" activiti:dueDate="P7D">
+      <extensionElements>
+        <activiti:formProperty id="diretoria" name="Diretoria" type="combobox" variable="diretoria" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listDiretoriaDSBusinessOperation'}" />
+        <activiti:formProperty id="uf" name="UF" type="combobox" variable="uf" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listUFDSBusinessOperation'}"/>
+        <activiti:formProperty id="cidade" name="Cidade" type="combobox" variable="cidade" writable="false" required="false" metadata="{'header': 'true', 'beanName' : 'listCidadeDSBusinessOperation'}" />
+        <activiti:formProperty id="tipoInvestimento" name="Fluxo do Investimento" type="enum" variable="tipoInvestimento" metadata="{'header': 'true'}">
+          <activiti:value id="idCentral" name="Central"></activiti:value>
+          <activiti:value id="idOutros" name="Pequenas Obras"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tipoObra" name="Tipo de Investimento" type="enum" variable="tipoObra" metadata="{'header': 'true'}">
+          <activiti:value id="idAlivioLogradouro" name="Alívio de Logradouro"></activiti:value>
+          <activiti:value id="idAlivioFTTH" name="Alívio FTTH"></activiti:value>
+          <activiti:value id="idAlivio" name="Alívios"></activiti:value>
+          <activiti:value id="idPequenoAlivio" name="Pequenos Alívios"></activiti:value>
+          <activiti:value id="idAteiMSAN" name="ATEI com MSAN"></activiti:value>
+          <activiti:value id="idAteiMetalico" name="ATEI Metálico"></activiti:value>
+          <activiti:value id="idCondominio" name="Condomínio"></activiti:value>
+          <activiti:value id="idIndustrial" name="Distrito Industrial"></activiti:value>
+          <activiti:value id="idExpansao" name="Expansão"></activiti:value>
+          <activiti:value id="idMicro" name="Micro Poligono"></activiti:value>
+          <activiti:value id="idNovaArea" name="Nova Área"></activiti:value>
+          <activiti:value id="idShopping" name="Shopping"></activiti:value>
+          <activiti:value id="idSobreposicao" name="Sobreposição"></activiti:value>
+          <activiti:value id="idExpansaoSobreposicao" name="Sobreposição + Expansão"></activiti:value>
+    </activiti:formProperty>
+    <activiti:formProperty id="tipoTecnologia" name="Tipo de Tecnologia" type="enum" variable="tipoTecnologia" metadata="{'header': 'true'}">
+          <activiti:value id="idFibra" name="Fibra"></activiti:value>
+          <activiti:value id="idCobre" name="Cobre"></activiti:value>
+        </activiti:formProperty>
+                	   
+	    <activiti:formProperty id="ra" name="RA" type="long" variable="ra"></activiti:formProperty>
+    	<activiti:formProperty id="rb" name="RB" type="long" variable="rb"></activiti:formProperty>
+    	<activiti:formProperty id="rc" name="RC" type="long" variable="rc"></activiti:formProperty>
+    	<activiti:formProperty id="rd" name="RD" type="long" variable="rd"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2C" name="Demanda B2C" type="long" variable="demandaB2C"></activiti:formProperty>
+    	<activiti:formProperty id="na" name="NA" type="long" variable="na"></activiti:formProperty>
+    	<activiti:formProperty id="nb" name="NB" type="long" variable="nb"></activiti:formProperty>
+    	<activiti:formProperty id="nc" name="NC" type="long" variable="nc"></activiti:formProperty>
+    	<activiti:formProperty id="pa" name="PA" type="long" variable="pa"></activiti:formProperty>
+    	<activiti:formProperty id="demandaB2B" name="Demanda B2B" type="long" variable="demandaB2B"></activiti:formProperty>
+    	<activiti:formProperty id="facilidade" name="Facilidades" type="long" variable="facilidade"></activiti:formProperty>
+    	<activiti:formProperty id="fileDemanda" name="Demanda" type="document" variable="fileDemanda"></activiti:formProperty>
+    	<activiti:formProperty id="filePoligono" name="Polígono" type="document" variable="filePoligono"></activiti:formProperty>
+        
+        <activiti:formProperty id="idfilePlanilhaNNA" name="Planilha NNA" type="document" variable="filePlanilhaNNA"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRE" name="Custos RE" type="document" variable="fileCustosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRE" name="Custos Compartilhados RE" type="document" variable="fileCustosCompartilhadosRE"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosRI" name="Custos RI" type="document" variable="fileCustosRI"></activiti:formProperty>
+        <activiti:formProperty id="fileCustosCompartilhadosRI" name="Custos Compartilhados RI" type="document" variable="fileCustosCompartilhadosRI"></activiti:formProperty>
+        <activiti:formProperty id="idResultadoFinanceiro" name="Resultado Financeiro" type="document" variable="planilhaResultadoFinanceiro"></activiti:formProperty>
+
+        <activiti:formProperty id="idRecomendacao" name="Recomendação (Resultado Financeiro)" type="enum" variable="recomendacao" writable="false">
+          <activiti:value id="idRecomendado" name="Recomendado"></activiti:value>
+          <activiti:value id="idNaoRecomendado" name="Não Recomendado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+          <activiti:value id="idNaoRecomendadoObrigatorio" name="Não Recomendado - Obra obrigatória"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultado" name="Observação (Resultado Financeiro)" type="string" variable="observacaoResultado" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idAprovacaoCDG" name="Aprovação (CDG)" type="enum" variable="aprovacaoCDG" writable="false">
+          <activiti:value id="idAprovado" name="Aprovado"></activiti:value>
+          <activiti:value id="idReprovado" name="Reprovado"></activiti:value>
+          <activiti:value id="idRevisar" name="Revisar"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoResultadoCDG" name="Observação (CDG)" type="string" variable="observacaoResultadoCDG" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="idRevisarPriorizacaoObra" name="Revisar? (MKT)" type="enum" variable="revisarPriorizacaoObra" required="true">
+          <activiti:value id="idNao" name="Não"></activiti:value>
+          <activiti:value id="idSim" name="Sim"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idObservacaoPriorizacaoObra" name="Observação (MKT)" type="string" variable="observacaoPriorizacaoObra"></activiti:formProperty>
+
+        <activiti:formProperty id="idAnoPriorizacaoObra" name="Ano" type="enum" variable="anoPriorizacaoObra">
+        	<activiti:value id="2018" name="2018"></activiti:value>
+          	<activiti:value id="2019" name="2019"></activiti:value>
+          	<activiti:value id="2020" name="2020"></activiti:value>
+          	<activiti:value id="2021" name="2021"></activiti:value>
+          	<activiti:value id="2022" name="2022"></activiti:value>
+          	<activiti:value id="2023" name="2023"></activiti:value>
+          	<activiti:value id="2024" name="2024"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idQuarterPriorizacaoObra" name="Quarter" type="enum" variable="quarterPriorizacaoObra">
+          <activiti:value id="idQ1" name="Q1"></activiti:value>
+          <activiti:value id="idQ2" name="Q2"></activiti:value>
+          <activiti:value id="idQ3" name="Q3"></activiti:value>
+          <activiti:value id="idQ4" name="Q4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="idCentral" name="Central" type="string" variable="central" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="arquivosNovaArea" name="Arquivos nova área" type="datagrid" variable="arquivosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;NomeArea&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Arquivo&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LotFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null }] } ] }" >
+          <activiti:dataGridCell headerName="Nome da área" formType="string"  objAttribute="NomeArea"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Arquivo" formType="document" objAttribute="Arquivo" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+        <activiti:formProperty id="armariosNovaArea" name="Armarios nova área" type="datagrid" variable="armariosNovaArea" metadata="{ &quot;lines&quot; : [{ &quot;values&quot; : [ { &quot;key&quot; : &quot;Armario&quot;, &quot;value&quot; : null, &quot;metadata&quot; : {&quot;beanName&quot; : &quot;listArmariosDSBusinessOperation&quot;, &quot;lazy&quot; : true, &quot;listening&quot; : &quot;cidade&quot;} },{ &quot;key&quot; : &quot;MediaLinha(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracao(B2C)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2C)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;MediaLinha(B2B)&quot;, &quot;value&quot; : null }, { &quot;key&quot; : &quot;TxPenetracao(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;TxPenetracaoPredio(B2B)&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimCM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtInicioLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimPrevisaoLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;DtFimLM&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;LoteFace&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Facilidade&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Demanda&quot;, &quot;value&quot; : null },{ &quot;key&quot; : &quot;Observacao&quot;, &quot;value&quot; : null } ] } ] }" >
+          <activiti:dataGridCell headerName="Armário" formType="combobox" objAttribute="Armario"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2C)" formType="double" objAttribute="TxPenetracao(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2C)" formType="double" objAttribute="TxPenetracaoPredio(B2C)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Penetração (B2B)" formType="double" objAttribute="TxPenetracao(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Tx. Pen. Prédio (B2B)" formType="double" objAttribute="TxPenetracaoPredio(B2B)" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoCM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimCM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início (Previsão)" formType="date" objAttribute="DtInicioPrevisaoLM" writable="true" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Início" formType="date" objAttribute="DtInicioLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim (Previsão)" formType="date" objAttribute="DtFimPrevisaoLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Data Fim" formType="date" objAttribute="DtFimLM" writable="false" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Lot Face" formType="document" objAttribute="LotFace" readable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Demanda" formType="double" objAttribute="Demanda" writable="false"></activiti:dataGridCell>
+          <activiti:dataGridCell headerName="Observação" formType="string" objAttribute="Observacao" readable="false"></activiti:dataGridCell>
+         </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow18" sourceRef="taskPriorizacaoObras" targetRef="Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${revisarPriorizacaoObra == 'idNao'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flowRevisarPriorizacaoObras" sourceRef="taskPriorizacaoObras" targetRef="Id_ea3d5eb5-c028-4284-bd15-944f60248251">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${revisarPriorizacaoObra == 'idSim'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
+      <bpmndi:BPMNShape bpmnElement="Id_b6eec2fe-8f62-41ef-9a46-371f737f17d5" id="BPMNShape_Id_b6eec2fe-8f62-41ef-9a46-371f737f17d5">
+        <omgdc:Bounds height="1703.0" width="3131.0" x="100.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_f0bad2b8-9324-43fd-ae8e-732feb8bc520" id="BPMNShape_Id_f0bad2b8-9324-43fd-ae8e-732feb8bc520">
+        <omgdc:Bounds height="246.0" width="3081.0" x="100.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_ad4ef9f0-6355-4be3-9018-b0f7467181e7" id="BPMNShape_Id_ad4ef9f0-6355-4be3-9018-b0f7467181e7">
+        <omgdc:Bounds height="200.0" width="3081.0" x="100.0" y="436.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_7d1b5405-5bd3-413f-b2bf-8ccc9a5926e6" id="BPMNShape_Id_7d1b5405-5bd3-413f-b2bf-8ccc9a5926e6">
+        <omgdc:Bounds height="200.0" width="3081.0" x="100.0" y="636.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_90df606e-df91-4efe-8c93-dd043329aaed" id="BPMNShape_Id_90df606e-df91-4efe-8c93-dd043329aaed">
+        <omgdc:Bounds height="200.0" width="3081.0" x="100.0" y="837.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_6ab685f3-af2f-46f9-834a-3d3dd176f371" id="BPMNShape_Id_6ab685f3-af2f-46f9-834a-3d3dd176f371">
+        <omgdc:Bounds height="199.0" width="3081.0" x="100.0" y="1037.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_01f66eae-a932-40a8-8e15-f7a6d9626ccb" id="BPMNShape_Id_01f66eae-a932-40a8-8e15-f7a6d9626ccb">
+        <omgdc:Bounds height="200.0" width="3081.0" x="100.0" y="1236.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_e73bc589-1636-4372-829a-ec1da549e212" id="BPMNShape_Id_e73bc589-1636-4372-829a-ec1da549e212">
+        <omgdc:Bounds height="152.0" width="3081.0" x="100.0" y="1436.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="laneCDG" id="BPMNShape_laneCDG">
+        <omgdc:Bounds height="152.0" width="3081.0" x="100.0" y="1588.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="laneMarketing" id="BPMNShape_laneMarketing">
+        <omgdc:Bounds height="152.0" width="3081.0" x="100.0" y="1740.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e" id="BPMNShape_Id_de41a3a6-f95f-4b6f-a62a-4f53e926998e">
+        <omgdc:Bounds height="62.0" width="114.0" x="342.0" y="291.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_5f68644e-26fd-459c-afd3-ce97f0df3460" id="BPMNShape_Id_5f68644e-26fd-459c-afd3-ce97f0df3460">
+        <omgdc:Bounds height="69.0" width="112.0" x="1679.0" y="338.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_fbea1c8f-d076-4947-9c8c-9d3a47232618" id="BPMNShape_Id_fbea1c8f-d076-4947-9c8c-9d3a47232618">
+        <omgdc:Bounds height="60.0" width="96.0" x="2065.0" y="914.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8" id="BPMNShape_Id_c8c32148-61eb-41cd-a8d4-f521e03eaff8">
+        <omgdc:Bounds height="40.0" width="40.0" x="2093.0" y="1301.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_3d53273d-190a-40b5-9700-77bef939bd8a" id="BPMNShape_Id_3d53273d-190a-40b5-9700-77bef939bd8a">
+        <omgdc:Bounds height="60.0" width="90.0" x="2195.0" y="1291.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f" id="BPMNShape_Id_57afde1d-531c-4c5b-8d0c-36fe9ed1001f">
+        <omgdc:Bounds height="40.0" width="40.0" x="2358.0" y="1301.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd" id="BPMNShape_Id_e3d7cdfb-ab5c-4d1f-ae20-7411ecee67bd">
+        <omgdc:Bounds height="64.0" width="120.0" x="2740.0" y="1481.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_7acdc52d-a6fc-4499-8e90-9f78566a596c" id="BPMNShape_Id_7acdc52d-a6fc-4499-8e90-9f78566a596c">
+        <omgdc:Bounds height="35.0" width="35.0" x="3110.0" y="1495.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_9995820f-6620-4a41-948e-d444dc5b3909" id="BPMNShape_Id_9995820f-6620-4a41-948e-d444dc5b3909">
+        <omgdc:Bounds height="40.0" width="40.0" x="1715.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02" id="BPMNShape_Id_c28c1fc9-2d20-42b0-9068-2bba9845bf02">
+        <omgdc:Bounds height="63.0" width="94.0" x="1688.0" y="1117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="validaArranjoB2B" id="BPMNShape_validaArranjoB2B">
+        <omgdc:Bounds height="60.0" width="90.0" x="1024.0" y="475.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_ea3d5eb5-c028-4284-bd15-944f60248251" id="BPMNShape_Id_ea3d5eb5-c028-4284-bd15-944f60248251">
+        <omgdc:Bounds height="40.0" width="40.0" x="782.0" y="485.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="validaArranjoB2C" id="BPMNShape_validaArranjoB2C">
+        <omgdc:Bounds height="60.0" width="90.0" x="757.0" y="662.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45" id="BPMNShape_Id_f0cb9c94-823d-41eb-b8ac-3102cff97a45">
+        <omgdc:Bounds height="40.0" width="40.0" x="1348.0" y="485.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Id_4ef0381a-e1ee-4d75-8720-83384c70e76e" id="BPMNShape_Id_4ef0381a-e1ee-4d75-8720-83384c70e76e">
+        <omgdc:Bounds height="40.0" width="40.0" x="1557.0" y="485.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startProcess" id="BPMNShape_startProcess">
+        <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1560.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="1380.0" y="243.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="250.0" y="307.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="1050.0" y="740.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="taskAprovacaoCDG" id="BPMNShape_taskAprovacaoCDG">
+        <omgdc:Bounds height="60.0" width="90.0" x="2340.0" y="1630.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegatewayCDG" id="BPMNShape_exclusivegatewayCDG">
+        <omgdc:Bounds height="40.0" width="40.0" x="2510.0" y="1639.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="taskPriorizacaoObras" id="BPMNShape_taskPriorizacaoObras">
+        <omgdc:Bounds height="60.0" width="90.0" x="2610.0" y="1800.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="Id_fe61f6e8-e422-49f5-b2f6-d2ad5d936cc3" id="BPMNEdge_Id_fe61f6e8-e422-49f5-b2f6-d2ad5d936cc3">
+        <omgdi:waypoint x="1755.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2113.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2113.0" y="914.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_281933dc-d394-4e94-9719-eefa8a4922f8" id="BPMNEdge_Id_281933dc-d394-4e94-9719-eefa8a4922f8">
+        <omgdi:waypoint x="1735.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1735.0" y="338.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_f391bbc5-9594-4202-9ebc-ed9e94bc94c5" id="BPMNEdge_Id_f391bbc5-9594-4202-9ebc-ed9e94bc94c5">
+        <omgdi:waypoint x="1735.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1735.0" y="1117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_c815d5a3-3fa2-41a7-9505-16366ab46c98" id="BPMNEdge_Id_c815d5a3-3fa2-41a7-9505-16366ab46c98">
+        <omgdi:waypoint x="2113.0" y="974.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2113.0" y="1301.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_8edd9787-3e79-4900-ad91-8584a2e3bb97" id="BPMNEdge_Id_8edd9787-3e79-4900-ad91-8584a2e3bb97">
+        <omgdi:waypoint x="2133.0" y="1321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2195.0" y="1321.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_47df72d1-6396-4312-ba78-271413426b80" id="BPMNEdge_Id_47df72d1-6396-4312-ba78-271413426b80">
+        <omgdi:waypoint x="2285.0" y="1321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2358.0" y="1321.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_7552081d-fee9-4286-bfc8-c6504f1d42c2" id="BPMNEdge_Id_7552081d-fee9-4286-bfc8-c6504f1d42c2">
+        <omgdi:waypoint x="2860.0" y="1513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="3110.0" y="1512.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_3e52720e-ac5d-4653-9312-c942817df366" id="BPMNEdge_Id_3e52720e-ac5d-4653-9312-c942817df366">
+        <omgdi:waypoint x="1735.0" y="1180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1735.0" y="1321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2093.0" y="1321.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_83645041-de55-4f20-954d-e3ad19376b2d" id="BPMNEdge_Id_83645041-de55-4f20-954d-e3ad19376b2d">
+        <omgdi:waypoint x="1114.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1348.0" y="505.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_b3b9f9e5-add5-424b-9112-d636b8a7145e" id="BPMNEdge_Id_b3b9f9e5-add5-424b-9112-d636b8a7145e">
+        <omgdi:waypoint x="2378.0" y="1341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2385.0" y="1630.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_51d55512-8e9f-4b5d-9324-fe2baff04c62" id="BPMNEdge_Id_51d55512-8e9f-4b5d-9324-fe2baff04c62">
+        <omgdi:waypoint x="802.0" y="525.0"></omgdi:waypoint>
+        <omgdi:waypoint x="802.0" y="662.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="19.0" x="802.0" y="528.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_50bd562b-89e2-466d-8f89-d46e6e9fd644" id="BPMNEdge_Id_50bd562b-89e2-466d-8f89-d46e6e9fd644">
+        <omgdi:waypoint x="1368.0" y="525.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1368.0" y="692.0"></omgdi:waypoint>
+        <omgdi:waypoint x="847.0" y="692.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="19.0" x="1368.0" y="608.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_4ddf6f28-033c-4a42-8c94-b3d45c589c99" id="BPMNEdge_Id_4ddf6f28-033c-4a42-8c94-b3d45c589c99">
+        <omgdi:waypoint x="1388.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1557.0" y="505.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="17.0" x="1443.0" y="481.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_cb4547fc-6013-46be-b607-a5bffe87511e" id="BPMNEdge_Id_cb4547fc-6013-46be-b607-a5bffe87511e">
+        <omgdi:waypoint x="456.0" y="322.0"></omgdi:waypoint>
+        <omgdi:waypoint x="802.0" y="322.0"></omgdi:waypoint>
+        <omgdi:waypoint x="802.0" y="485.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="2378.0" y="1301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2378.0" y="1086.0"></omgdi:waypoint>
+        <omgdi:waypoint x="398.0" y="1086.0"></omgdi:waypoint>
+        <omgdi:waypoint x="399.0" y="353.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="Id_52e9e4ca-e4e2-45a7-acd8-a977153c0943" id="BPMNEdge_Id_52e9e4ca-e4e2-45a7-acd8-a977153c0943">
+        <omgdi:waypoint x="1600.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1715.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="1380.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="397.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="399.0" y="291.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="1577.0" y="485.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1580.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="1560.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1485.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="205.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="327.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="290.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="322.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="270.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="505.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="822.0" y="505.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1024.0" y="505.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="802.0" y="722.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="760.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1050.0" y="760.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="1070.0" y="740.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1069.0" y="535.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="1090.0" y="760.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1576.0" y="759.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1577.0" y="525.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="2398.0" y="1321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="3127.0" y="1321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="3127.0" y="1495.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="2430.0" y="1660.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2510.0" y="1659.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="2550.0" y="1659.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2655.0" y="1659.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2655.0" y="1800.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="2530.0" y="1679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2530.0" y="1717.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2240.0" y="1717.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2240.0" y="1351.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="2700.0" y="1830.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2799.0" y="1830.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2800.0" y="1545.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flowRevisarPriorizacaoObras" id="BPMNEdge_flowRevisarPriorizacaoObras">
+        <omgdi:waypoint x="2610.0" y="1830.0"></omgdi:waypoint>
+        <omgdi:waypoint x="814.0" y="1828.0"></omgdi:waypoint>
+        <omgdi:waypoint x="399.0" y="353.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

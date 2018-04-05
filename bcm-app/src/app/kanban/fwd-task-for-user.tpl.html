@@ -1,0 +1,28 @@
+<md-dialog class="padding-modal-content"  id="cadastro" ng-cloak flex-sm="90" flex-gt-sm="70" flex-gt-md="50" flex-gt-lg="30">
+
+    <div class="md-table-toolbar md-default">
+        <h2 class="title-modal">Encaminhar Tarefa</h2>
+    </div>
+    <br/>
+    <md-divider style="margin: -20px;"></md-divider>
+    <form ng-submit="fowardTask(service.selectedTask)">
+        <md-input-container style="padding: 55px;">
+            <md-select ng-model="selectedUser" placeholder="Encaminhar para">
+                <md-option ng-value="user.uid" ng-repeat="user in service.listUsersGroup">
+                    {{user.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </form>
+
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <div flex></div>
+            <md-button ng-click="close()"  md-no-ink class="md-primary "><span class="text-button-cancel">CANCELAR</span></md-button>
+
+            <md-button type="submit" ng-click="fowardTaskToUser(selectedUser)" md-no-ink class="md-primary"><span style="font-size: 17px;" class="text-button-send">ENCAMINHAR</span></md-button>
+        </div>
+    </md-toolbar>
+
+
+</md-dialog>

@@ -1,0 +1,173 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="60" layout="row">
+            <div>
+                <span class="title-bar">{{comboGroup.description}}</span>
+                <md-menu>
+                    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button">
+                        <ng-md-icon icon="arrow_drop_down"style="fill: #757575"></ng-md-icon>
+                    </md-button>
+
+                    <md-menu-content style="max-height: 420 ;width: 270px;">
+                        <md-menu-item  align="left">
+                            <md-button ng-click="filterGroup(service.selectedUF, service.sortByCreateDate, service.selectedStatus, 'ALL')">
+                                <span>Todos</span>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-repeat="group in service.groupsInvestimentList"  align="left">
+                            <md-button ng-click="filterGroup(service.selectedUF, service.sortByCreateDate, service.selectedStatus, group)">
+                                <span>{{group.description}}</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+
+                </md-menu>
+            </div>
+        </div>
+        <div flex="40" align="right">
+            <md-button md-no-ink ng-click="newInstance()" class="md-primary">
+                <span class="link-bar">Abrir novo BC</span>
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+
+<md-toolbar class="padding-content" layout-align="center center" layout="row" style="background: #f5f5f5; font-size: 14px; height: 20px;">
+    <div layout="row" flex="100">
+
+        <div flex="65">
+
+            <div>
+                <div layout="row">
+                    <ng-md-icon fill="#474747" icon="filter_list" style="margin-top: 20px;padding-right: 11px;"></ng-md-icon>
+
+                    <md-input-container style="padding-right: 11px;min-width: 170px;">
+                        <label>UF</label>
+                        <md-select class="md-block" ng-model="service.selectedUF">
+                            <md-option>Todos</md-option>
+                            <md-option ng-repeat="uf in filterService.ufs" value="{{uf.key}}">
+                                {{uf.value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container style="padding-right: 11px;min-width: 170px;">
+                        <label>Ordenar</label>
+                        <md-select ng-model="ordenar">
+                            <md-option value="ASC">Mais novas</md-option>
+                            <md-option value="DESC">Mais antigas</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container style="padding-right: 11px;min-width: 170px;">
+                        <label>Status</label>
+                        <md-select ng-model="service.selectedStatus">
+                            <md-option value="ACTIVE">Em andamento</md-option>
+                            <md-option value="FINISHED">Concluído</md-option>
+                            <md-option value="CANCELED">Cancelado</md-option>
+
+                        </md-select>
+                    </md-input-container>
+
+                    <md-button type="submit" ng-click="sendFilter(service.selectedUF,ordenar,service.selectedStatus, comboGroup)" class="md-fab md-mini md-primary" 
+                        style="font-family: 'Roboto-Bold'; bottom: 18px; padding-bottom: 5px; border-radius: 6px; margin-top: 32px;min-width:88px;width: 88px; height: 33px;">
+                        <span>Filtrar</span>
+                    </md-button>
+                </div>
+            </div>
+
+        </div>
+        <div flex="10"></div>
+        <div flex="25" align="right">
+            <md-input-container>
+                <label style="text-align : left">Buscar Nº Processo</label>
+                <input ng-model="businessKey">
+            </md-input-container>
+            <md-button class="md-fab md-mini md-primary" ng-click="sendFilter(service.selectedUF,ordenar,service.selectedStatus, comboGroup)" style="margin-top: 32px; bottom: 18px; padding-bottom: 5px; border-radius: 6px; line-height: 54px; width: 34px; height: 33px;">
+                <ng-md-icon icon="search" style="fill: #FFF">
+                    <md-tooltip>Buscar</md-tooltip>
+                </ng-md-icon>
+            </md-button>
+        </div>
+    </div>
+</md-toolbar>
+
+<div></div>
+
+<div class="spinner"  ng-show="service.isLoading">
+    <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+</div>
+
+<div class="padding-content">
+    <form style="background-color :    #FFFFFF" class="navbar-form navbar-right">
+        <md-table-container flex="100">
+            <table md-table ng-model="model.equipmentList" md-progress="promise">
+                <thead style="padding: 0px;" class="header-lists" md-head>
+                    <tr md-row>
+                        <th md-column flex="10"><span class="header-lists">Nº Processo</span></th>
+                        <th md-column flex="20"><span class="header-lists">Criar por</span></th>
+                        <th md-column flex="15"><span class="header-lists">Data início</span></th>
+                        <th md-column flex="20" style="width: 220px;"><span class="header-lists">Data fim {{selectedStatus == 'ACTIVE' ? '(Tarefa)' : ''}}</span></th>
+                        <th md-column flex="20"><span class="header-lists">Progresso</span></th>
+                        <th md-column flex="5" md-numeric></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                <tr style="border :1|0" class="hover" md-auto-select md-row ng-repeat="processInstance in service.processInstaceList">
+                    <md-divider style="position: static"></md-divider>
+                    <td md-cell flex="10" class="td-list" style="padding-left: 35px;">{{processInstance.businessKey}}</td>
+                    <td md-cell flex="20" class="td-list" style="padding-left: 15px;">{{processInstance.owner}}</td>
+                    <td md-cell flex="15" class="td-list" style="padding-left: 15px;">{{processInstance.startDate  | date:"dd/MM/yy" }}</td>
+                    <td md-cell flex="20" class="td-list" style="padding-left: 15px;"><span  ng-class="{'text-warning' : processInstance.lateDays > 0 && service.selectedStatus === 'ACTIVE', 'text-regular' : processInstance.lateDays === 0 } ">{{processInstance.endDate  | date:"dd/MM/yy" }}</span></td>
+                    <td md-cell flex="20" style="padding-left: 15px;">
+                      <div layout="row">
+                        <div flex="80">
+                        <div style="border-radius: 5px;" class="w3-border w3-round-xlarge">
+                            <div class="w3-grey w3-round-xlarge" style="height:24px;width:{{processInstance.percentual}}%"></div>
+                        </div>
+                      </div>
+                          <div flex="5"></div>
+                        <div style="margin-top: 3px;">
+                            <span>{{processInstance.percentual}}%</span>
+                        </div>
+                      </div>
+
+                    </td>
+                    <td md-cell flex="5">
+                        <md-menu >
+                            <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button">
+                                <ng-md-icon icon="more_vert" style="fill: #757575"></ng-md-icon>
+                            </md-button>
+                            <md-menu-content>
+                                <md-menu-item>
+                                    <div style="text-align: left">
+                                        <a style="text-decoration: none !important;" ui-sref="in.detailsInstance({id:processInstance.businessKey})">Abrir Projeto</a>
+                                    </div>
+                                </md-menu-item>
+
+                                <md-menu-item ng-if="processInstance.status !=='CANCELED'">
+                                    <md-button ng-click="openModalComfirmCancelInstance(processInstance.processInstanceId)">Cancelar
+                                        Projeto
+                                    </md-button>
+                                </md-menu-item>
+
+                                <md-menu-item>
+                                    <md-button ng-click="downloadAllFiles(processInstance)" aria-label="Baixar Arquivos">Baixar Arquivos</md-button>
+                                </md-menu-item>
+
+                            </md-menu-content>
+                        </md-menu>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </form>
+
+
+
+    <md-table-pagination md-limit="service.tableLimit" md-page="service.tablePage" md-total="{{service.tableTotal}}"
+                         md-on-paginate="onTablePaginate" md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por página:', of: 'de'}"/>
+
+</div>

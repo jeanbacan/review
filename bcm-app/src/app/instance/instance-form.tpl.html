@@ -1,0 +1,111 @@
+<md-toolbar layout="row"  layout-align="center center" class="padding-content"style="background: #FFFFFF;  box-shadow: #ccc 2px 4px 4px -2px; z-index: 20; padding-bottom: 0; padding-top: 10px ">
+    <div layout="row" flex="100">
+        <div flex="60" layout="row">
+            <div>
+                <ng-md-icon icon="keyboard_backspace" style="fill: #757575; margin-right: 20px;" ng-click="goBack()">
+                    <md-tooltip>Voltar</md-tooltip>
+                </ng-md-icon>
+
+                <span class="title-bar">Abertura de BC</span>
+            </div>
+        </div>
+    </div>
+</md-toolbar>
+<div></div>
+
+<div class="padding-content" style="padding-top: 10px;">
+    <md-card ng-show="!service.isLoading">
+        <md-card-content>
+            <form name="instanceForm" ng-submit="openModalCreateInstance(instanceForm)" novalidate>
+                <div class="spinner" ng-show="service.isLoading">
+                    <span us-spinner="{radius:15, width:8, length: 5 , lines:9}"></span>
+                </div>
+
+
+                <div layout="row" style="padding: 30px;" layout-wrap>
+                    <div flex="25" ng-repeat="formIten in service.processInstanceStartDTO.formItems">
+
+                        <div flex="95" ng-if="formIten.readable">
+                            <md-input-container layout="column" ng-if="formIten.type === 'COMBOBOX'" >
+                                <label>{{formIten.name}}</label>
+                                <md-select class="md-block input-tasks"  ng-model="formIten.value"  ng-change="listening(formIten)" ng-required="formIten.required">
+                                    <md-option  ng-repeat="possibleValue in formIten.comboBoxPossibleValues" value="{{possibleValue.key}}">
+                                        {{possibleValue.value}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95">
+                            <md-input-container layout="column" ng-if="formIten.type === 'STRING'">
+                                <label>{{formIten.name}}</label>
+                                <input ng-model="formIten.value" type="text" ng-disabled="formIten.writable === false" flex="80" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+
+                        <div flex="80">
+                            <md-input-container layout="column" ng-if="formIten.type === 'LONG'">
+                                <label>{{formIten.name}}</label>
+                                <input placeholder="Somente Inteiros" ng-model="formIten.value" type="text" only-numbers ng-disabled="!formIten.writable" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+                        <div flex="95">
+                            <md-input-container layout="column" ng-if="formIten.type === 'DATE'">
+                                <label>{{formIten.name}}</label>
+                                <input ng-model="formIten.value" type="text" ng-disabled="formIten.writable === 'false'" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95">
+                            <md-input-container  layout="column" ng-if="formIten.type === 'ENUM'">
+                                <label>{{formIten.name}}</label>
+                                <md-select id="teste" class="md-block"ng-model="formIten.value" ng-required="formIten.required">
+                                    <md-option id="teste"   ng-repeat="(key,possibleValue) in formIten. possibleValues" value="{{key}}">
+                                        {{possibleValue}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div flex="95">
+                            <md-input-container layout="column" ng-if="formIten.type === 'BOOLEAN'">
+                                <md-checkbox class="md-block input-tasks"  ng-model="formIten.value" ng-disabled="formIten.writable === 'false'" ng-required="formIten.required">
+                                    {{formIten.name}}
+                                </md-checkbox>
+                            </md-input-container>
+                        </div>
+                        <div flex="95">
+                            <md-input-container layout="column" ng-if="formIten.type === 'DOCUMENT'" >
+                                <label class="myLabel">
+                                    <input ng-model="field.formValue"
+                                           id="{{field.id}}" type="file"
+                                           onchange="angular.element(this).scope().uploadShowFile(this)"/>
+                                    <ng-md-icon icon="attach_file"  style="fill: #757575"></ng-md-icon>
+                                    <span >Selecione um arquivo</span>
+                                </label>
+                            </md-input-container>
+                        </div>
+
+                        <div flex="95">
+                            <md-input-container layout="column" ng-if="formIten.type === 'DOUBLE'" >
+                                <label>{{formIten.name}}</label>
+                                <input ng-model="formIten.value" type="number" string-to-number ng-disabled="formIten.writable === 'false'" ng-required="formIten.required">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="row" flex="100">
+                        <div flex="60"></div>
+                        <div flex="40" align="right">
+                            <md-button ng-click="goBack()" md-no-ink class="md-primary">
+                                <span class="link-bar" style="color: #AEAEAE;">CANCELAR</span>
+                            </md-button>
+                            <md-button md-no-ink class="md-primary"  type="submit">
+                                <span class="link-bar">CRIAR</span>
+                            </md-button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>

@@ -1,0 +1,49 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="processEngineConfiguration"
+    class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+
+   	<property name="jdbcUrl" value="jdbc:oracle:thin:@pvoracle1dev:1521:endvono" />
+    <property name="jdbcDriver" value="oracle.jdbc.OracleDriver" />
+    <property name="jdbcUsername" value="DEV_USER_OWNER_07" />
+    <property name="jdbcPassword" value="UU5544_B" />
+
+    <!-- Database configurations -->
+    <property name="databaseSchemaUpdate" value="false" />
+
+    <!-- job executor configurations -->
+    <property name="jobExecutorActivate" value="false" />    
+
+	<property name="customFormTypes">
+		<list>
+		      <bean class="br.com.vivo.bcm.activiti.formType.DocumentFormType"/>
+		      <bean class="br.com.vivo.bcm.activiti.formType.ComboBoxFormType"/>
+		</list>
+	</property>
+
+    <!-- mail server configurations -->
+    <property name="mailServerPort" value="5025" />
+
+    <property name="mailServers">
+      <map>
+        <entry key="myEmailTenant">
+          <bean class="org.activiti.engine.cfg.MailServerInfo">
+            <property name="mailServerHost" value="localhost" />
+            <property name="mailServerPort" value="5025" />
+            <property name="mailServerUseSSL" value="false" />
+            <property name="mailServerUseTLS" value="false" />
+            <property name="mailServerDefaultFrom" value="activiti@myTenant.com" />
+            <property name="mailServerUsername" value="activiti@myTenant.com" />
+            <property name="mailServerPassword" value="password" />
+          </bean>
+        </entry>
+      </map>
+    </property>
+
+    <property name="enableProcessDefinitionInfoCache" value="true" />
+
+  </bean>
+
+</beans>
